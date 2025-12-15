@@ -128,69 +128,27 @@ button.start {
 
 <body>
 
-<!-- ===== TESTPANEL ===== -->
-<div class="test-panel minimized" id="testPanel">
-  <button class="toggle-panel" id="togglePanelBtn">🧪 Testpanel</button>
-
-  <div class="panel-content">
-    <h3>TESTVERSION</h3>
-
-    <label>Spelare</label>
-    <select id="playerSelect">
-      <option value="Johan">Johan</option>
-      <option value="Solveig">Solveig</option>
-    </select>
-
-    <label>Veckodag</label>
-    <select id="daySelect">
-      <option value="mon">Måndag</option>
-      <option value="tue">Tisdag</option>
-      <option value="wed">Onsdag</option>
-    </select>
-
-    <label>Effekt (resultat)</label>
-    <select id="effectSelect">
-      <option value="goldConfetti">🎉 Guld-konfetti</option>
-      <option value="silverConfetti">🥈 Silver-konfetti</option>
-      <option value="fireworks">🎆 Fyrverkerier</option>
-      <option value="sparks">✨ Gnistor</option>
-      <option value="mix">🌈 Mix</option>
-      <option value="none">❌ Ingen</option>
-    </select>
-
-    <hr>
-
-    <button id="skipQuizBtn" class="secondary">⏭ Hoppa till resultat</button>
-    <button id="forceWeekBtn" class="secondary">🏁 Markera veckan klar</button>
-
-    <hr>
-
-    <button id="resetBtn">Nollställ veckan</button>
-  </div>
-</div>
-
-<!-- ===== QUIZ ===== -->
 <div class="box">
   <h1>🏆 RBK Quiz</h1>
 
   <div id="startScreen">
-    <button class="start" id="startBtn">Starta quiz</button>
+    <button id="startBtn">Starta quiz</button>
   </div>
 
   <div id="quizScreen" class="hidden">
     <p id="question"></p>
     <div id="options"></div>
-    <div class="timer" id="timer"></div>
   </div>
 
   <div id="resultScreen" class="hidden">
-    <h2>🏁 Resultattavla</h2>
-    <div class="result" id="finalResult"></div>
+    <h2>Resultat</h2>
+    <div id="finalResult"></div>
   </div>
 </div>
 
 <script type="module" src="./js/app.js"></script>
- 
+
 </body>
 </html>
+
 
