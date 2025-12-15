@@ -1,42 +1,38 @@
 [
   {
     "question": "Vilket år grundades Real Madrid?",
-    "answers": ["1897", "1902", "1910", "1921"],
+    "answers": ["1899", "1902", "1910", "1923"],
     "correct": 1
+  },
+  {
+    "question": "Vilken arena är Real Madrids hemmaarena?",
+    "answers": [
+      "Wanda Metropolitano",
+      "Camp Nou",
+      "Santiago Bernabéu",
+      "Estadio Mestalla"
+    ],
+    "correct": 2
   },
   {
     "question": "Vilken spelare har gjort flest mål för Real Madrid genom tiderna?",
-    "answers": ["Raúl", "Cristiano Ronaldo", "Karim Benzema", "Alfredo Di Stéfano"],
+    "answers": [
+      "Raúl",
+      "Cristiano Ronaldo",
+      "Karim Benzema",
+      "Alfredo Di Stéfano"
+    ],
     "correct": 1
   },
   {
-    "question": "Hur många Champions League-titlar har Real Madrid (t.o.m. 2024)?",
+    "question": "Hur många Champions League-titlar hade Real Madrid efter vinsten 2022?",
     "answers": ["12", "13", "14", "15"],
-    "correct": 3
-  },
-  {
-    "question": "Vilken tränare ledde Real Madrid till tre raka Champions League-titlar?",
-    "answers": ["Carlo Ancelotti", "José Mourinho", "Zinédine Zidane", "Rafael Benítez"],
     "correct": 2
   },
   {
-    "question": "Vilken arena spelade Real Madrid på före Santiago Bernabéu?",
-    "answers": ["Camp Nou", "Chamartín", "Vicente Calderón", "Mestalla"],
-    "correct": 1
-  },
-  {
-    "question": "Vilken spelare vann Ballon d'Or 2018 som Real Madrid-spelare?",
-    "answers": ["Cristiano Ronaldo", "Luka Modrić", "Karim Benzema", "Toni Kroos"],
-    "correct": 1
-  },
-  {
-    "question": "Vilket nummer bar Raúl största delen av sin karriär i Real Madrid?",
-    "answers": ["7", "9", "10", "11"],
-    "correct": 0
-  },
-  {
-    "question": "Vilket år vann Real Madrid La Décima (sin 10:e CL-titel)?",
-    "answers": ["2012", "2013", "2014", "2015"],
+    "question": "Vilken färg har Real Madrids bortaställ traditionellt?",
+    "answers": ["Svart", "Blå", "Lila", "Vit"],
     "correct": 2
   }
 ]
+
