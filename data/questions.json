@@ -1,12 +1,42 @@
 [
   {
-    "question": "Testfråga 1",
-    "answers": ["A", "B", "C"],
+    "question": "Vilket år grundades Real Madrid?",
+    "answers": ["1897", "1902", "1910", "1921"],
+    "correct": 1
+  },
+  {
+    "question": "Vilken spelare har gjort flest mål för Real Madrid genom tiderna?",
+    "answers": ["Raúl", "Cristiano Ronaldo", "Karim Benzema", "Alfredo Di Stéfano"],
+    "correct": 1
+  },
+  {
+    "question": "Hur många Champions League-titlar har Real Madrid (t.o.m. 2024)?",
+    "answers": ["12", "13", "14", "15"],
+    "correct": 3
+  },
+  {
+    "question": "Vilken tränare ledde Real Madrid till tre raka Champions League-titlar?",
+    "answers": ["Carlo Ancelotti", "José Mourinho", "Zinédine Zidane", "Rafael Benítez"],
+    "correct": 2
+  },
+  {
+    "question": "Vilken arena spelade Real Madrid på före Santiago Bernabéu?",
+    "answers": ["Camp Nou", "Chamartín", "Vicente Calderón", "Mestalla"],
+    "correct": 1
+  },
+  {
+    "question": "Vilken spelare vann Ballon d'Or 2018 som Real Madrid-spelare?",
+    "answers": ["Cristiano Ronaldo", "Luka Modrić", "Karim Benzema", "Toni Kroos"],
+    "correct": 1
+  },
+  {
+    "question": "Vilket nummer bar Raúl största delen av sin karriär i Real Madrid?",
+    "answers": ["7", "9", "10", "11"],
     "correct": 0
   },
   {
-    "question": "Testfråga 2",
-    "answers": ["1", "2", "3"],
-    "correct": 1
+    "question": "Vilket år vann Real Madrid La Décima (sin 10:e CL-titel)?",
+    "answers": ["2012", "2013", "2014", "2015"],
+    "correct": 2
   }
 ]
