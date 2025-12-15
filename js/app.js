@@ -62,7 +62,19 @@ function startTimer() {
     if (timeLeft <= 0) {
       clearInterval(timer);
       locked = true;
-      engine.answer(-1);
+      if (timeLeft <= 0) {
+  clearInterval(timer);
+  locked = true;
+
+  // visa rätt svar visuellt
+  const q = engine.currentQuestion();
+  if (q && optionsEl.children[q.correct]) {
+    optionsEl.children[q.correct].classList.add("correct");
+  }
+
+  setTimeout(renderQuestion, 800);
+}
+
       setTimeout(renderQuestion, 800);
     }
   }, 1000);
