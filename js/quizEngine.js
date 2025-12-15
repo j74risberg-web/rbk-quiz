@@ -1,36 +1,46 @@
 export class QuizEngine {
   constructor() {
-    this.state = {
-      index: 0,
-      score: 0,
-      questions: []
-    };
+    this.questions = [];
+    this.currentIndex = 0;
+    this.score = 0;
   }
 
-  async loadQuestions() {
-    const res = await fetch("./data/questions.json");
+  async loadQuestions(url = "./data/questions.json") {
+    const res = await fetch(url);
     const data = await res.json();
 
     if (!Array.isArray(data) || data.length === 0) {
       throw new Error("Inga giltiga frågor hittades");
     }
 
-    this.state.questions = data;
+    this.questions = data;
+    this.currentIndex = 0;
+    this.score = 0;
+
+    console.log("Frågor laddade:", this.questions.length);
   }
 
-  current() {
-    return this.state.questions[this.state.index] || null;
+  getCurrentQuestion() {
+    return this.questions[this.currentIndex] || null;
   }
 
-  answer(choiceIndex) {
-    const q = this.current();
-    if (!q) return true;
+  answer(answerIndex) {
+    const q = this.getCurrentQuestion();
+    if (!q) return false;
 
-    if (choiceIndex === q.correct) {
-      this.state.score++;
+    if (answerIndex === q.correct) {
+      this.score++;
     }
 
-    this.state.index++;
-    return this.state.index >= this.state.questions.length;
+    this.currentIndex++;
+    return this.currentIndex < this.questions.length;
+  }
+
+  isFinished() {
+    return this.currentIndex >= this.questions.length;
+  }
+
+  getScore() {
+    return this.score;
   }
 }
