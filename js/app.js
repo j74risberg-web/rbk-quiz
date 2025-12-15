@@ -3,8 +3,6 @@ import { QuizEngine } from "./quizEngine.js";
 /* =====================
    DOM
 ===================== */
-const tickSound = new Audio("./sounds/tick.mp3");
-tickSound.volume = 0.5;
 const startBtn = document.getElementById("startBtn");
 const startScreen = document.getElementById("startScreen");
 const quizScreen = document.getElementById("quizScreen");
@@ -13,21 +11,21 @@ const resultScreen = document.getElementById("resultScreen");
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const finalResultEl = document.getElementById("finalResult");
+const timerEl = document.getElementById("timer");
+
+/* =====================
+   LJUD
+===================== */
+const tickSound = new Audio("./sounds/tick.mp3");
+tickSound.volume = 0.5;
 
 /* =====================
    STATE
 ===================== */
 let engine;
-let timer;
+let timer = null;
 let timeLeft = 10;
 let locked = false;
-
-/* =====================
-   LJUD (pip)
-===================== */
-const beep = new Audio(
-  "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA="
-);
 
 /* =====================
    START
@@ -46,10 +44,6 @@ startBtn.onclick = async () => {
 /* =====================
    TIMER
 ===================== */
-
-let timer;
-let timeLeft = 10;
-
 function startTimer() {
   clearInterval(timer);
   timeLeft = 10;
@@ -69,7 +63,6 @@ function startTimer() {
     // ⏱ Slut på tid
     if (timeLeft <= 0) {
       clearInterval(timer);
-
       if (!locked) {
         locked = true;
         revealCorrect();
@@ -80,20 +73,13 @@ function startTimer() {
 }
 
 function updateTimer() {
-  document.getElementById("timer").textContent = `⏱ ${timeLeft}s`;
-}
-
-      }
-    }
-  }, 1000);
-}
-
-function updateTimer() {
-  document.getElementById("timer").textContent = `⏱ ${timeLeft}s`;
+  if (timerEl) {
+    timerEl.textContent = `⏱ ${timeLeft}s`;
+  }
 }
 
 /* =====================
-   RENDERA FRÅGA
+   FRÅGA
 ===================== */
 function renderQuestion() {
   if (engine.isFinished()) {
@@ -104,7 +90,7 @@ function renderQuestion() {
   locked = false;
   clearInterval(timer);
 
-  const q = engine.currentQuestion();
+  const q = engine.getCurrentQuestion();
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
 
@@ -114,9 +100,7 @@ function renderQuestion() {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.textContent = answer;
-
     btn.onclick = () => handleAnswer(btn, index);
-
     optionsEl.appendChild(btn);
   });
 }
@@ -129,14 +113,13 @@ function handleAnswer(btn, index) {
   locked = true;
   clearInterval(timer);
 
-  const q = engine.currentQuestion();
-  const correctIndex = q.correct;
+  const q = engine.getCurrentQuestion();
 
-  if (index === correctIndex) {
+  if (index === q.correct) {
     btn.classList.add("correct");
   } else {
     btn.classList.add("wrong");
-    optionsEl.children[correctIndex].classList.add("correct");
+    optionsEl.children[q.correct].classList.add("correct");
   }
 
   engine.answer(index);
@@ -144,7 +127,7 @@ function handleAnswer(btn, index) {
 }
 
 function revealCorrect() {
-  const q = engine.currentQuestion();
+  const q = engine.getCurrentQuestion();
   if (!q) return;
   optionsEl.children[q.correct].classList.add("correct");
   engine.answer(-1);
@@ -162,7 +145,7 @@ function showResult() {
   resultScreen.classList.remove("hidden");
 
   const score = engine.getScore();
-  const total = engine.getTotal();
+  const total = engine.questions.length;
   const percent = Math.round((score / total) * 100);
 
   let medal = "🥉";
