@@ -75,8 +75,9 @@ function startTimer() {
 
     // ⏱ TIDEN SLUT
     if (timeLeft <= 0) {
-      clearInterval(timer);      // ⛔ VIKTIGT: stoppa timern
-      timer = null;
+      stopTimer();
+      // ⛔ VIKTIGT: stoppa timern
+     
       locked = true;
 
       engine.answer(-1);         // räknas som fel / timeout
