@@ -80,6 +80,64 @@
       text-align: center;
       margin-top: 16px;
     }
+
+  /* ===== RESULTATVY ===== */
+
+.result-card {
+  background: #020617;
+  border-radius: 16px;
+  padding: 32px 24px;
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.result-card h2 {
+  margin-bottom: 16px;
+  font-size: 26px;
+}
+
+.score-box {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.score-number {
+  font-size: 64px;
+  font-weight: 700;
+  color: #facc15; /* guld */
+}
+
+.score-text {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.result-message {
+  font-size: 16px;
+  margin: 12px 0 24px;
+  opacity: 0.9;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #facc15, #eab308);
+  color: #020617;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(250,204,21,0.35);
+}
   </style>
 </head>
 
@@ -99,16 +157,26 @@
     </div>
 
     <!-- RESULTAT -->
-    <div id="resultScreen" class="hidden">
-      <h2>Resultat</h2>
-      <div id="finalResult"></div>
-    </div>
+    <div id="resultScreen" class="hidden result-card">
+  <h2 id="resultTitle">Resultat</h2>
+
+  <div class="score-box">
+    <span class="score-number" id="finalScore">0</span>
+    <span class="score-text">poäng</span>
+  </div>
+
+  <p id="resultMessage" class="result-message"></p>
+
+  <button id="restartBtn" class="primary-btn">Spela igen</button>
+</div>
+
   </div>
 
   <!-- JS MÅSTE LIGGA SIST -->
   <script type="module" src="./js/app.js"></script>
 </body>
 </html>
+
 
 
 
