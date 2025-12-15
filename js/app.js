@@ -159,7 +159,6 @@ function showResult() {
   finalResultEl.innerHTML = `
    
     <p>${score} / ${total} rätt</p>
-    <p>${percent}%</p>
   `;
 }
 
