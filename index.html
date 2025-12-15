@@ -7,179 +7,58 @@
 
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
       background: #0f172a;
       color: #e5e7eb;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      padding: 16px;
     }
 
     .box {
+      max-width: 500px;
+      margin: 0 auto;
       background: #020617;
-      border-radius: 14px;
-      padding: 24px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+      padding: 20px;
+      border-radius: 12px;
     }
 
     h1, h2 {
       text-align: center;
-      margin-top: 0;
     }
 
     button {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       font-size: 16px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: none;
       cursor: pointer;
       background: #facc15;
-      color: #020617;
-      font-weight: bold;
+      color: #000;
+      margin-top: 12px;
     }
 
-    button:hover {
-      background: #fde047;
+    .option {
+      background: #111827;
+      border: 1px solid #374151;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    .option:hover {
+      background: #1f2933;
     }
 
     .hidden {
       display: none;
     }
 
-    #question {
-      font-size: 18px;
-      margin-bottom: 16px;
-    }
-
-    #options {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .option {
-      background: #020617;
-      border: 1px solid #334155;
-      padding: 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      text-align: center;
-    }
-
-    .option:hover {
-      background: #1e293b;
-    }
-
     #finalResult {
-      font-size: 20px;
+      font-size: 18px;
       text-align: center;
-      margin-top: 16px;
+      margin-top: 12px;
     }
-
-  /* ===== RESULTATVY ===== */
-
-.result-card {
-  background: #020617;
-  border-radius: 16px;
-  padding: 32px 24px;
-  max-width: 420px;
-  margin: 0 auto;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
-
-.result-card h2 {
-  margin-bottom: 16px;
-  font-size: 26px;
-}
-
-.score-box {
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  gap: 8px;
-  margin: 16px 0;
-}
-
-.score-number {
-  font-size: 64px;
-  font-weight: 700;
-  color: #facc15; /* guld */
-}
-
-.score-text {
-  font-size: 18px;
-  opacity: 0.8;
-}
-
-.result-message {
-  font-size: 16px;
-  margin: 12px 0 24px;
-  opacity: 0.9;
-}
-
-.primary-btn {
-  background: linear-gradient(135deg, #facc15, #eab308);
-  color: #020617;
-  border: none;
-  border-radius: 999px;
-  padding: 14px 28px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.primary-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(250,204,21,0.35);
-}
-  .option {
-  display: block;
-  width: 100%;
-  margin: 8px 0;
-  padding: 12px;
-  background: #102b3f;
-  color: #fff;
-  border: 1px solid #fca5a5;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.option:hover {
-  background: #164e63;
-}
-
-.result-box {
-  background: #020617;
-  border: 2px solid #fca5a5;
-  border-radius: 14px;
-  padding: 20px;
-  text-align: center;
-}
-
-.result-box h2 {
-  margin-bottom: 10px;
-}
-
-.result-msg {
-  margin: 12px 0;
-  font-size: 1.1em;
-}
-
-#restartBtn {
-  margin-top: 15px;
-  padding: 10px 16px;
-  font-size: 1em;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
   </style>
 </head>
 
@@ -199,29 +78,15 @@
     </div>
 
     <!-- RESULTAT -->
-    <div id="resultScreen" class="hidden result-card">
-  <h2 id="resultTitle">Resultat</h2>
-
-  <div class="score-box">
-    <span class="score-number" id="finalScore">0</span>
-    <span class="score-text">poäng</span>
+    <div id="resultScreen" class="hidden">
+      <h2>Resultat</h2>
+      <div id="finalResult"></div>
+      <button onclick="location.reload()">Spela igen</button>
+    </div>
   </div>
 
-  <p id="resultMessage" class="result-message"></p>
-
-  <button id="restartBtn" class="primary-btn">Spela igen</button>
-</div>
-
-  </div>
-
-  <!-- JS MÅSTE LIGGA SIST -->
+  <!-- VIKTIGT: script sist -->
   <script type="module" src="./js/app.js"></script>
 </body>
 </html>
-
-
-
-
-
-
 
