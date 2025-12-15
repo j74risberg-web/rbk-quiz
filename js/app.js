@@ -9,39 +9,37 @@ const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const finalResult = document.getElementById("finalResult");
 
-const engine = new QuizEngine();
+let engine;
 
-startBtn.addEventListener("click", async () => {
+startBtn.onclick = async () => {
+  engine = new QuizEngine();
   await engine.loadQuestions();
 
   startScreen.classList.add("hidden");
   quizScreen.classList.remove("hidden");
 
   render();
-});
+};
 
 function render() {
-  const q = engine.getCurrentQuestion();
-
-  if (!q) {
+  if (engine.isFinished()) {
     quizScreen.classList.add("hidden");
     resultScreen.classList.remove("hidden");
-    finalResult.textContent = `Poäng: ${engine.score}`;
+    finalResult.textContent = `Du fick ${engine.getScore()} poäng`;
     return;
   }
 
+  const q = engine.getCurrentQuestion();
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
 
   q.answers.forEach((answer, index) => {
     const btn = document.createElement("button");
     btn.textContent = answer;
-
     btn.onclick = () => {
       engine.answer(index);
       render();
     };
-
     optionsEl.appendChild(btn);
   });
 }
