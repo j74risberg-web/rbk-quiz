@@ -46,26 +46,41 @@ startBtn.onclick = async () => {
 /* =====================
    TIMER
 ===================== */
+
+let timer;
+let timeLeft = 10;
+
 function startTimer() {
+  clearInterval(timer);
   timeLeft = 10;
   updateTimer();
 
   timer = setInterval(() => {
     timeLeft--;
 
-    if (timeLeft === 3) beep.play();
+    // 🔊 Tick vid 3, 2, 1
+    if (timeLeft <= 3 && timeLeft > 0) {
+      tickSound.currentTime = 0;
+      tickSound.play();
+    }
 
     updateTimer();
 
+    // ⏱ Slut på tid
     if (timeLeft <= 0) {
       clearInterval(timer);
+
       if (!locked) {
         locked = true;
         revealCorrect();
         setTimeout(nextQuestion, 1000);
-         if (timeLeft <= 3 && timeLeft > 0) {
-           tickSound.currentTime = 0;
-           tickSound.play();
+      }
+    }
+  }, 1000);
+}
+
+function updateTimer() {
+  document.getElementById("timer").textContent = `⏱ ${timeLeft}s`;
 }
 
       }
