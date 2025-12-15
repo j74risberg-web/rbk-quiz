@@ -1,154 +1,101 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<title>RBK Quiz v.2</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>RBK Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: #e5e7eb;
-  padding: 16px;
-}
-.hidden { display: none; }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
 
-/* ===== TESTPANEL ===== */
-.test-panel {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  background: #020617;
-  border: 1px dashed #fca5a5;
-  padding: 10px;
-  border-radius: 10px;
-  width: 260px;
-  font-size: 14px;
-  z-index: 20;
-}
-.test-panel h3 {
-  margin: 6px 0;
-  color: #fca5a5;
-}
-.test-panel label {
-  margin-top: 6px;
-  display: block;
-}
-.test-panel select,
-.test-panel button {
-  width: 100%;
-  margin-top: 4px;
-  padding: 6px;
-}
-.test-panel button {
-  background: #7f1d1d;
-  color: white;
-  border: none;
-  border-radius: 6px;
-}
-.test-panel .secondary {
-  background: #334155;
-}
+    .box {
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
 
-/* === MINIMERBAR PANEL === */
-.toggle-panel {
-  background: #020617;
-  color: #fca5a5;
-  border: 1px solid #1e293b;
-  border-radius: 6px;
-  padding: 6px;
-  cursor: pointer;
-  width: 100%;
-}
-.test-panel.minimized .panel-content {
-  display: none;
-}
-@media (max-width: 768px) {
-  .test-panel {
-    width: auto;
-  }
-}
+    h1, h2 {
+      text-align: center;
+    }
 
-/* ===== QUIZ ===== */
-.box {
-  background: #020617;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 640px;
-  margin: 80px auto 0;
-}
-button.start {
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 18px;
-  width: 100%;
-}
-.option {
-  background: #1e293b;
-  padding: 14px;
-  margin: 10px 0;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.option.correct { background: #166534; }
-.option.wrong { background: #7f1d1d; }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 16px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+    }
 
-.timer {
-  text-align: center;
-  color: #facc15;
-  margin-top: 10px;
-}
+    button:hover {
+      background: #1d4ed8;
+    }
 
-/* ===== RESULT ===== */
-.result {
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-  padding: 16px;
-  background: #020617;
-  border: 1px solid #1e293b;
-  font-size: 18px;
-  min-height: 120px;
-}
+    .option {
+      background: #020617;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
 
-/* ===== EFFECTS ===== */
-.fx { position: absolute; pointer-events: none; }
-.confetti { width: 6px; height: 12px; animation: fall linear forwards; }
-@keyframes fall { to { transform: translateY(180px) rotate(360deg); opacity: 0.8; } }
-.firework { width: 6px; height: 6px; border-radius: 50%; animation: explode 1.6s ease-out forwards; }
-@keyframes explode { to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
-.spark { width: 4px; height: 4px; border-radius: 50%; animation: spark 1.2s ease-out forwards; }
-@keyframes spark { to { transform: translateY(40px); opacity: 0; } }
-</style>
+    .option:hover {
+      background: #020617;
+      border-color: #38bdf8;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h1>🏆 RBK Quiz</h1>
+  <div class="box">
+    <h1>🏆 RBK Quiz</h1>
 
-  <div id="startScreen">
-    <button id="startBtn">Starta quiz</button>
+    <!-- START -->
+    <div id="startScreen">
+      <button id="startBtn">Starta quiz</button>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quizScreen" class="hidden">
+      <p id="question"></p>
+      <div id="options"></div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="resultScreen" class="hidden">
+      <h2>Resultat</h2>
+      <div id="finalResult"></div>
+      <button onclick="location.reload()">Spela igen</button>
+    </div>
   </div>
 
-  <div id="quizScreen" class="hidden">
-    <p id="question"></p>
-    <div id="options"></div>
-  </div>
-
-  <div id="resultScreen" class="hidden">
-    <h2>Resultat</h2>
-    <div id="finalResult"></div>
-  </div>
-</div>
-
-<script type="module" src="./js/app.js"></script>
-
+  <!-- VIKTIGT: script sist -->
+  <script type="module" src="./js/app.js"></script>
 </body>
 </html>
+
+
 
 
