@@ -1,1 +1,37 @@
+{
+  "hotell": [
+    { "name": "Sheraton Stockholm", "address": "Tegelbacken" },
+    { "name": "Grand Hôtel", "address": "Södra Blasieholmshamnen" },
+    { "name": "Scandic Continental", "address": "Vasagatan" },
+    { "name": "Radisson Blu Waterfront", "address": "Nils Ericsons Plan" }
+  ],
+
+  "restauranger": [
+    { "name": "Operakällaren", "address": "Karl XII:s torg" },
+    { "name": "Pelikan", "address": "Blekingegatan" },
+    { "name": "Riche", "address": "Birger Jarlsgatan" },
+    { "name": "Tradition", "address": "Österlånggatan" }
+  ],
+
+  "nattklubbar": [
+    { "name": "Sturecompagniet", "address": "Sturegatan" },
+    { "name": "Spy Bar", "address": "Birger Jarlsgatan" },
+    { "name": "Café Opera", "address": "Karl XII:s torg" },
+    { "name": "Trädgården", "address": "Hammarby Slussväg" }
+  ],
+
+  "teatrar_biografer": [
+    { "name": "Dramaten", "address": "Nybroplan" },
+    { "name": "Göta Lejon", "address": "Götgatan" },
+    { "name": "Skandia-Teatern", "address": "Drottninggatan" },
+    { "name": "Filmstaden Sergel", "address": "Hötorget" }
+  ],
+
+  "huvudkontor": [
+    { "name": "Spotify HQ", "address": "Regeringsgatan" },
+    { "name": "H&M HQ", "address": "Mäster Samuelsgatan" },
+    { "name": "SEB HQ", "address": "Kungsträdgårdsgatan" },
+    { "name": "Ericsson HQ", "address": "Torshamnsgatan" }
+  ]
+}
 
