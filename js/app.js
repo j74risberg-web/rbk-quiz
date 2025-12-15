@@ -17,7 +17,7 @@ const timerEl = document.getElementById("timer");
    LJUD
 ===================== */
 const tickSound = new Audio("./sounds/tick.mp3");
-tickSound.volume = 0.5;
+tickSound.volume = 0.4;
 
 /* =====================
    STATE
@@ -52,7 +52,7 @@ function startTimer() {
   timer = setInterval(() => {
     timeLeft--;
 
-    // 🔊 Tick vid 3, 2, 1
+    // 🔊 tick vid 3,2,1
     if (timeLeft <= 3 && timeLeft > 0) {
       tickSound.currentTime = 0;
       tickSound.play();
@@ -65,7 +65,7 @@ function startTimer() {
       if (!locked) {
         locked = true;
         revealCorrect();
-        setTimeout(nextQuestion, 1000);
+        setTimeout(renderQuestion, 1000);
       }
     }
   }, 1000);
@@ -78,7 +78,7 @@ function updateTimer() {
 }
 
 /* =====================
-   RENDERA FRÅGA
+   VISA FRÅGA
 ===================== */
 function renderQuestion() {
   if (engine.isFinished()) {
@@ -117,29 +117,24 @@ function handleAnswer(btn, index) {
   clearInterval(timer);
 
   const q = engine.getCurrentQuestion();
-  const correctIndex = q.correct;
+  const correct = q.correct;
 
-  if (index === correctIndex) {
+  if (index === correct) {
     btn.classList.add("correct");
   } else {
     btn.classList.add("wrong");
-    optionsEl.children[correctIndex].classList.add("correct");
+    optionsEl.children[correct].classList.add("correct");
   }
 
   engine.answer(index);
-  setTimeout(nextQuestion, 1000);
+  setTimeout(renderQuestion, 1000);
 }
 
 function revealCorrect() {
   const q = engine.getCurrentQuestion();
   if (!q) return;
-
   optionsEl.children[q.correct].classList.add("correct");
-  engine.answer(-1); // fel svar
-}
-
-function nextQuestion() {
-  renderQuestion();
+  engine.answer(-1);
 }
 
 /* =====================
@@ -164,3 +159,4 @@ function showResult() {
     <button onclick="location.reload()">Spela igen</button>
   `;
 }
+
