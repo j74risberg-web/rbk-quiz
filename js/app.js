@@ -19,9 +19,7 @@ let engine;
 ===================== */
 startBtn.addEventListener("click", async () => {
   engine = new QuizEngine();
-
   await engine.loadQuestions();
-  console.log("Quiz startat");
 
   startScreen.classList.add("hidden");
   resultScreen.classList.add("hidden");
@@ -34,13 +32,12 @@ startBtn.addEventListener("click", async () => {
    RENDERA FRÅGA
 ===================== */
 function renderQuestion() {
-  const q = engine.current();
-
-  // Inga fler frågor → visa resultat
-  if (!q) {
+  if (engine.isFinished()) {
     showResult();
     return;
   }
+
+  const q = engine.getCurrentQuestion();
 
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
@@ -66,8 +63,8 @@ function showResult() {
   quizScreen.classList.add("hidden");
   resultScreen.classList.remove("hidden");
 
-  const total = engine.state.questions.length;
-  const score = engine.state.score;
+  const total = engine.questions.length;
+  const score = engine.getScore();
   const percent = Math.round((score / total) * 100);
 
   let medal = "🥉";
@@ -79,7 +76,7 @@ function showResult() {
       <h2>${medal} Resultat</h2>
       <p><strong>Poäng:</strong> ${score} / ${total}</p>
       <p><strong>Rätt:</strong> ${percent}%</p>
-      <p class="result-msg">
+      <p>
         ${
           percent >= 80
             ? "Grymt jobbat! 🔥"
@@ -88,11 +85,7 @@ function showResult() {
             : "Ny omgång imorgon 😉"
         }
       </p>
-      <button id="restartBtn">Spela igen</button>
     </div>
   `;
-
-  document.getElementById("restartBtn").onclick = () => {
-    location.reload();
-  };
 }
+
