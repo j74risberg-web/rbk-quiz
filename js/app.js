@@ -1,7 +1,7 @@
 import { QuizEngine } from "./quizEngine.js";
 
 /* =====================
-   HÄMTA DOM-ELEMENT
+   DOM
 ===================== */
 const startBtn = document.getElementById("startBtn");
 const startScreen = document.getElementById("startScreen");
@@ -21,6 +21,8 @@ startBtn.addEventListener("click", async () => {
   engine = new QuizEngine();
   await engine.loadQuestions();
 
+  console.log("Quiz startat");
+
   startScreen.classList.add("hidden");
   resultScreen.classList.add("hidden");
   quizScreen.classList.remove("hidden");
@@ -29,7 +31,7 @@ startBtn.addEventListener("click", async () => {
 });
 
 /* =====================
-   RENDERA FRÅGA
+   VISA FRÅGA
 ===================== */
 function renderQuestion() {
   if (engine.isFinished()) {
@@ -57,14 +59,14 @@ function renderQuestion() {
 }
 
 /* =====================
-   RESULTATVY
+   RESULTAT
 ===================== */
 function showResult() {
   quizScreen.classList.add("hidden");
   resultScreen.classList.remove("hidden");
 
-  const total = engine.questions.length;
   const score = engine.getScore();
+  const total = engine.questions.length;
   const percent = Math.round((score / total) * 100);
 
   let medal = "🥉";
@@ -72,20 +74,8 @@ function showResult() {
   else if (percent >= 60) medal = "🥈";
 
   finalResultEl.innerHTML = `
-    <div class="result-box">
-      <h2>${medal} Resultat</h2>
-      <p><strong>Poäng:</strong> ${score} / ${total}</p>
-      <p><strong>Rätt:</strong> ${percent}%</p>
-      <p>
-        ${
-          percent >= 80
-            ? "Grymt jobbat! 🔥"
-            : percent >= 60
-            ? "Bra kämpat 💪"
-            : "Ny omgång imorgon 😉"
-        }
-      </p>
-    </div>
+    <h3>${medal} Resultat</h3>
+    <p><strong>${score}</strong> av <strong>${total}</strong> rätt</p>
+    <p>${percent}%</p>
   `;
 }
-
