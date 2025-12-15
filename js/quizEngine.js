@@ -7,29 +7,23 @@ export class QuizEngine {
 
   async loadQuestions() {
     const res = await fetch("./data/questions.json");
-    const data = await res.json();
-
-    if (!Array.isArray(data)) {
-      throw new Error("questions.json attaching är felaktig");
-    }
-
-    this.questions = data;
+    this.questions = await res.json();
     console.log("Frågor laddade:", this.questions.length);
   }
 
-  getCurrentQuestion() {
+  currentQuestion() {
     return this.questions[this.index] || null;
   }
 
   answer(answerIndex) {
-    const q = this.getCurrentQuestion();
-    if (!q) return;
+    const q = this.currentQuestion();
+    if (!q) return false;
 
-    if (answerIndex === q.correct) {
-      this.score++;
-    }
+    const correct = answerIndex === q.correct;
+    if (correct) this.score++;
 
     this.index++;
+    return correct;
   }
 
   isFinished() {
@@ -38,5 +32,9 @@ export class QuizEngine {
 
   getScore() {
     return this.score;
+  }
+
+  getTotal() {
+    return this.questions.length;
   }
 }
