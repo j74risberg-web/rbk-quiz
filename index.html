@@ -3,72 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <title>RBK Quiz</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #0f172a;
       color: #e5e7eb;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
     }
 
     .box {
       background: #020617;
-      border: 1px solid #334155;
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 24px;
-      max-width: 420px;
       width: 100%;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
     }
 
     h1, h2 {
       text-align: center;
+      margin-top: 0;
     }
 
     button {
       width: 100%;
       padding: 14px;
-      margin-top: 16px;
       font-size: 16px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: none;
       cursor: pointer;
-      background: #2563eb;
-      color: white;
+      background: #facc15;
+      color: #020617;
+      font-weight: bold;
     }
 
     button:hover {
-      background: #1d4ed8;
-    }
-
-    .option {
-      background: #020617;
-      border: 1px solid #475569;
-      border-radius: 8px;
-      padding: 12px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-
-    .option:hover {
-      background: #020617;
-      border-color: #38bdf8;
+      background: #fde047;
     }
 
     .hidden {
       display: none;
     }
+
+    #question {
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option {
+      background: #020617;
+      border: 1px solid #334155;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .option:hover {
+      background: #1e293b;
+    }
+
+    #finalResult {
+      font-size: 20px;
+      text-align: center;
+      margin-top: 16px;
+    }
   </style>
 </head>
 
 <body>
-
   <div class="box">
     <h1>🏆 RBK Quiz</h1>
 
@@ -83,18 +98,18 @@
       <div id="options"></div>
     </div>
 
-    <!-- RESULT -->
+    <!-- RESULTAT -->
     <div id="resultScreen" class="hidden">
       <h2>Resultat</h2>
       <div id="finalResult"></div>
-      <button onclick="location.reload()">Spela igen</button>
     </div>
   </div>
 
-  <!-- VIKTIGT: script sist -->
+  <!-- JS MÅSTE LIGGA SIST -->
   <script type="module" src="./js/app.js"></script>
 </body>
 </html>
+
 
 
 
