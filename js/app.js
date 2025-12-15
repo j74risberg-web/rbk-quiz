@@ -45,13 +45,14 @@ startBtn.onclick = async () => {
    TIMER
 ===================== */
 function startTimer() {
-  clearInterval(timer);
+  clearInterval(timer);          // ⛔ stoppa eventuell gammal timer
   timeLeft = 10;
   updateTimer();
 
   timer = setInterval(() => {
     timeLeft--;
 
+    // 🔊 Tick vid 3, 2, 1
     if (timeLeft <= 3 && timeLeft > 0) {
       tickSound.currentTime = 0;
       tickSound.play();
@@ -59,26 +60,18 @@ function startTimer() {
 
     updateTimer();
 
+    // ⏱ TIDEN SLUT
     if (timeLeft <= 0) {
-      clearInterval(timer);
+      clearInterval(timer);      // ⛔ VIKTIGT: stoppa timern
+      timer = null;
       locked = true;
-      if (timeLeft <= 0) {
-  clearInterval(timer);
-  locked = true;
 
-  // visa rätt svar visuellt
-  const q = engine.currentQuestion();
-  if (q && optionsEl.children[q.correct]) {
-    optionsEl.children[q.correct].classList.add("correct");
-  }
-
-  setTimeout(renderQuestion, 800);
-}
-
+      engine.answer(-1);         // räknas som fel / timeout
       setTimeout(renderQuestion, 800);
     }
   }, 1000);
 }
+
 
 function updateTimer() {
   if (timerEl) {
