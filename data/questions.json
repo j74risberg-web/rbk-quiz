@@ -1,38 +1,12 @@
-[
-  {
-    "question": "Vilket år grundades Real Madrid?",
-    "answers": ["1899", "1902", "1910", "1923"],
-    "correct": 1
-  },
-  {
-    "question": "Vilken arena är Real Madrids hemmaarena?",
-    "answers": [
-      "Wanda Metropolitano",
-      "Camp Nou",
-      "Santiago Bernabéu",
-      "Estadio Mestalla"
-    ],
-    "correct": 2
-  },
-  {
-    "question": "Vilken spelare har gjort flest mål för Real Madrid genom tiderna?",
-    "answers": [
-      "Raúl",
-      "Cristiano Ronaldo",
-      "Karim Benzema",
-      "Alfredo Di Stéfano"
-    ],
-    "correct": 1
-  },
-  {
-    "question": "Hur många Champions League-titlar hade Real Madrid efter vinsten 2022?",
-    "answers": ["12", "13", "14", "15"],
-    "correct": 2
-  },
-  {
-    "question": "Vilken färg har Real Madrids bortaställ traditionellt?",
-    "answers": ["Svart", "Blå", "Lila", "Vit"],
-    "correct": 2
-  }
-]
+{
+  "category": "hotell",
+  "question": "Var ligger Hotel Sheraton?",
+  "answers": [
+    "Tegelbacken",
+    "Stureplan",
+    "Medborgarplatsen",
+    "Odenplan"
+  ],
+  "correct": 0
+}
 
