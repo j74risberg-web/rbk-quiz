@@ -129,7 +129,7 @@ function renderQuestion() {
 function handleAnswer(index, btn) {
   if (locked) return;
   locked = true;
-  clearInterval(timer);
+  stopTimer();
 
   const q = engine.currentQuestion();
 
