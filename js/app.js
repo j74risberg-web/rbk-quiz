@@ -90,20 +90,21 @@ function updateTimer() {
    RENDER FRÅGA
 ===================== */
 function renderQuestion() {
+  // ⛔ stoppa ALLTID eventuell gammal timer
+  clearInterval(timer);
+
   if (engine.isFinished()) {
     showResult();
     return;
   }
 
   locked = false;
-  clearInterval(timer);
 
-  const q = engine.currentQuestion(); // 🔒 ENDA TILLÅTNA
-
+  const q = engine.currentQuestion();
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
 
-  startTimer();
+  startTimer(); // ✅ starta NY timer här
 
   q.answers.forEach((answer, index) => {
     const btn = document.createElement("button");
@@ -114,6 +115,7 @@ function renderQuestion() {
     optionsEl.appendChild(btn);
   });
 }
+
 
 /* =====================
    SVAR
