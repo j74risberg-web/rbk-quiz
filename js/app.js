@@ -23,7 +23,7 @@ tickSound.volume = 0.5;
    STATE
 ===================== */
 let engine;
-let timer = null;
+let timer;
 let timeLeft = 10;
 let locked = false;
 
@@ -60,7 +60,6 @@ function startTimer() {
 
     updateTimer();
 
-    // ⏱ Slut på tid
     if (timeLeft <= 0) {
       clearInterval(timer);
       if (!locked) {
@@ -79,7 +78,7 @@ function updateTimer() {
 }
 
 /* =====================
-   FRÅGA
+   RENDERA FRÅGA
 ===================== */
 function renderQuestion() {
   if (engine.isFinished()) {
@@ -91,6 +90,8 @@ function renderQuestion() {
   clearInterval(timer);
 
   const q = engine.getCurrentQuestion();
+  if (!q) return;
+
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
 
@@ -100,7 +101,9 @@ function renderQuestion() {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.textContent = answer;
+
     btn.onclick = () => handleAnswer(btn, index);
+
     optionsEl.appendChild(btn);
   });
 }
@@ -114,12 +117,13 @@ function handleAnswer(btn, index) {
   clearInterval(timer);
 
   const q = engine.getCurrentQuestion();
+  const correctIndex = q.correct;
 
-  if (index === q.correct) {
+  if (index === correctIndex) {
     btn.classList.add("correct");
   } else {
     btn.classList.add("wrong");
-    optionsEl.children[q.correct].classList.add("correct");
+    optionsEl.children[correctIndex].classList.add("correct");
   }
 
   engine.answer(index);
@@ -129,8 +133,9 @@ function handleAnswer(btn, index) {
 function revealCorrect() {
   const q = engine.getCurrentQuestion();
   if (!q) return;
+
   optionsEl.children[q.correct].classList.add("correct");
-  engine.answer(-1);
+  engine.answer(-1); // fel svar
 }
 
 function nextQuestion() {
