@@ -17,13 +17,13 @@ const timerEl = document.getElementById("timer");
    LJUD
 ===================== */
 const tickSound = new Audio("./sounds/tick.mp3");
-tickSound.volume = 0.4;
+tickSound.volume = 0.5;
 
 /* =====================
    STATE
 ===================== */
 let engine;
-let timer;
+let timer = null;
 let timeLeft = 10;
 let locked = false;
 
@@ -52,7 +52,6 @@ function startTimer() {
   timer = setInterval(() => {
     timeLeft--;
 
-    // 🔊 tick vid 3,2,1
     if (timeLeft <= 3 && timeLeft > 0) {
       tickSound.currentTime = 0;
       tickSound.play();
@@ -72,13 +71,11 @@ function startTimer() {
 }
 
 function updateTimer() {
-  if (timerEl) {
-    timerEl.textContent = `⏱ ${timeLeft}s`;
-  }
+  timerEl.textContent = `⏱ ${timeLeft}s`;
 }
 
 /* =====================
-   VISA FRÅGA
+   RENDER FRÅGA
 ===================== */
 function renderQuestion() {
   if (engine.isFinished()) {
@@ -90,8 +87,6 @@ function renderQuestion() {
   clearInterval(timer);
 
   const q = engine.getCurrentQuestion();
-  if (!q) return;
-
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
 
@@ -103,7 +98,6 @@ function renderQuestion() {
     btn.textContent = answer;
 
     btn.onclick = () => handleAnswer(btn, index);
-
     optionsEl.appendChild(btn);
   });
 }
@@ -117,13 +111,12 @@ function handleAnswer(btn, index) {
   clearInterval(timer);
 
   const q = engine.getCurrentQuestion();
-  const correct = q.correct;
 
-  if (index === correct) {
+  if (index === q.correct) {
     btn.classList.add("correct");
   } else {
     btn.classList.add("wrong");
-    optionsEl.children[correct].classList.add("correct");
+    optionsEl.children[q.correct].classList.add("correct");
   }
 
   engine.answer(index);
@@ -133,6 +126,7 @@ function handleAnswer(btn, index) {
 function revealCorrect() {
   const q = engine.getCurrentQuestion();
   if (!q) return;
+
   optionsEl.children[q.correct].classList.add("correct");
   engine.answer(-1);
 }
@@ -148,15 +142,12 @@ function showResult() {
   const total = engine.questions.length;
   const percent = Math.round((score / total) * 100);
 
-  let medal = "🥉";
-  if (percent >= 80) medal = "🥇";
-  else if (percent >= 60) medal = "🥈";
-
   finalResultEl.innerHTML = `
-    <h2>${medal} Resultat</h2>
+    <h2>Resultat</h2>
     <p><strong>${score}</strong> / ${total} rätt</p>
     <p>${percent}%</p>
     <button onclick="location.reload()">Spela igen</button>
   `;
 }
+
 
