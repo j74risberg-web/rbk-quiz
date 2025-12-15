@@ -9,10 +9,9 @@ const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const finalResult = document.getElementById("finalResult");
 
-let engine;
+const engine = new QuizEngine();
 
 startBtn.addEventListener("click", async () => {
-  engine = new QuizEngine();
   await engine.loadQuestions();
 
   startScreen.classList.add("hidden");
@@ -27,20 +26,22 @@ function render() {
   if (!q) {
     quizScreen.classList.add("hidden");
     resultScreen.classList.remove("hidden");
-    finalResult.textContent = `Du fick ${engine.getScore()} poäng`;
+    finalResult.textContent = `Poäng: ${engine.score}`;
     return;
   }
 
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
 
-  q.answers.forEach((text, index) => {
+  q.answers.forEach((answer, index) => {
     const btn = document.createElement("button");
-    btn.textContent = text;
+    btn.textContent = answer;
+
     btn.onclick = () => {
       engine.answer(index);
       render();
     };
+
     optionsEl.appendChild(btn);
   });
 }
