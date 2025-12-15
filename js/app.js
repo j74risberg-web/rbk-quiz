@@ -86,7 +86,7 @@ function renderQuestion() {
   locked = false;
   clearInterval(timer);
 
-  const q = engine.getCurrentQuestion(); // 🔒 ENDA TILLÅTNA
+  const q = engine.currentQuestion(); // 🔒 ENDA TILLÅTNA
 
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
@@ -111,7 +111,7 @@ function handleAnswer(index, btn) {
   locked = true;
   clearInterval(timer);
 
-  const q = engine.getCurrentQuestion();
+  const q = engine.currentQuestion()();
 
   if (index === q.correct) {
     btn.classList.add("correct");
