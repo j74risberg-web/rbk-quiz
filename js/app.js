@@ -157,10 +157,9 @@ function showResult() {
   const percent = Math.round((score / total) * 100);
 
   finalResultEl.innerHTML = `
-    <h2>Resultat</h2>
+   
     <p>${score} / ${total} rätt</p>
     <p>${percent}%</p>
-    <button onclick="location.reload()">Spela igen</button>
   `;
 }
 
