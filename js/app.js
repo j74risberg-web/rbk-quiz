@@ -155,15 +155,23 @@ function showResult() {
   const score = engine.getScore();
   const total = engine.getTotal();
 
-  let medal = "🥉";
+  let medal = "";
+
   if (score === 5) medal = "🥇";
   else if (score === 4) medal = "🥈";
   else if (score === 3) medal = "🥉";
+  // 0–2 rätt → ingen medalj
 
   finalResultEl.innerHTML = `
-    <h2>${medal} Resultat</h2>
-    <p><strong>${score}</strong> / ${total} rätt</p>
+    <div style="text-align:center; font-size:64px; margin-bottom:16px;">
+      ${medal}
+    </div>
+    <p style="text-align:center; font-size:18px;">
+      ${score} / ${total} rätt
+    </p>
+    <button onclick="location.reload()">Spela igen</button>
   `;
 }
+
 
 
