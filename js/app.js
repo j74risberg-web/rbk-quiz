@@ -12,26 +12,66 @@ const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const finalResultEl = document.getElementById("finalResult");
 
+/* =====================
+   STATE
+===================== */
 let engine;
+let timer;
+let timeLeft = 10;
+let locked = false;
 
 /* =====================
-   STARTA QUIZ
+   LJUD (pip)
 ===================== */
-startBtn.addEventListener("click", async () => {
+const beep = new Audio(
+  "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA="
+);
+
+/* =====================
+   START
+===================== */
+startBtn.onclick = async () => {
   engine = new QuizEngine();
   await engine.loadQuestions();
-
-  console.log("Quiz startat");
 
   startScreen.classList.add("hidden");
   resultScreen.classList.add("hidden");
   quizScreen.classList.remove("hidden");
 
   renderQuestion();
-});
+};
 
 /* =====================
-   VISA FRÅGA
+   TIMER
+===================== */
+function startTimer() {
+  timeLeft = 10;
+  updateTimer();
+
+  timer = setInterval(() => {
+    timeLeft--;
+
+    if (timeLeft === 3) beep.play();
+
+    updateTimer();
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      if (!locked) {
+        locked = true;
+        revealCorrect();
+        setTimeout(nextQuestion, 1000);
+      }
+    }
+  }, 1000);
+}
+
+function updateTimer() {
+  document.getElementById("timer").textContent = `⏱ ${timeLeft}s`;
+}
+
+/* =====================
+   RENDERA FRÅGA
 ===================== */
 function renderQuestion() {
   if (engine.isFinished()) {
@@ -39,39 +79,57 @@ function renderQuestion() {
     return;
   }
 
-  const q = engine.getCurrentQuestion();
+  locked = false;
+  clearInterval(timer);
 
+  const q = engine.currentQuestion();
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
+
+  startTimer();
 
   q.answers.forEach((answer, index) => {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.textContent = answer;
 
-    btn.onclick = () => {
-      // lås alla knappar
-      const buttons = document.querySelectorAll(".option");
-      buttons.forEach(b => (b.disabled = true));
-
-      // markera rätt / fel
-      if (index === q.correct) {
-        btn.classList.add("correct");
-      } else {
-        btn.classList.add("wrong");
-        buttons[q.correct].classList.add("correct");
-      }
-
-      engine.answer(index);
-
-      // nästa fråga efter kort paus
-      setTimeout(() => {
-        renderQuestion();
-      }, 900);
-    };
+    btn.onclick = () => handleAnswer(btn, index);
 
     optionsEl.appendChild(btn);
   });
+}
+
+/* =====================
+   SVAR
+===================== */
+function handleAnswer(btn, index) {
+  if (locked) return;
+  locked = true;
+  clearInterval(timer);
+
+  const q = engine.currentQuestion();
+  const correctIndex = q.correct;
+
+  if (index === correctIndex) {
+    btn.classList.add("correct");
+  } else {
+    btn.classList.add("wrong");
+    optionsEl.children[correctIndex].classList.add("correct");
+  }
+
+  engine.answer(index);
+  setTimeout(nextQuestion, 1000);
+}
+
+function revealCorrect() {
+  const q = engine.currentQuestion();
+  if (!q) return;
+  optionsEl.children[q.correct].classList.add("correct");
+  engine.answer(-1);
+}
+
+function nextQuestion() {
+  renderQuestion();
 }
 
 /* =====================
@@ -82,7 +140,7 @@ function showResult() {
   resultScreen.classList.remove("hidden");
 
   const score = engine.getScore();
-  const total = engine.questions.length;
+  const total = engine.getTotal();
   const percent = Math.round((score / total) * 100);
 
   let medal = "🥉";
@@ -90,8 +148,9 @@ function showResult() {
   else if (percent >= 60) medal = "🥈";
 
   finalResultEl.innerHTML = `
-    <h3>${medal} Resultat</h3>
-    <p><strong>${score}</strong> av <strong>${total}</strong> rätt</p>
+    <h2>${medal} Resultat</h2>
+    <p><strong>${score}</strong> / ${total} rätt</p>
     <p>${percent}%</p>
+    <button onclick="location.reload()">Spela igen</button>
   `;
 }
