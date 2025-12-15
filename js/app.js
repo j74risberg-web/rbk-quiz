@@ -50,8 +50,24 @@ function renderQuestion() {
     btn.textContent = answer;
 
     btn.onclick = () => {
+      // lås alla knappar
+      const buttons = document.querySelectorAll(".option");
+      buttons.forEach(b => (b.disabled = true));
+
+      // markera rätt / fel
+      if (index === q.correct) {
+        btn.classList.add("correct");
+      } else {
+        btn.classList.add("wrong");
+        buttons[q.correct].classList.add("correct");
+      }
+
       engine.answer(index);
-      renderQuestion();
+
+      // nästa fråga efter kort paus
+      setTimeout(() => {
+        renderQuestion();
+      }, 900);
     };
 
     optionsEl.appendChild(btn);
