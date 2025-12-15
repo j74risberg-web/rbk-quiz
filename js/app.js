@@ -3,6 +3,8 @@ import { QuizEngine } from "./quizEngine.js";
 /* =====================
    DOM
 ===================== */
+const tickSound = new Audio("./sounds/tick.mp3");
+tickSound.volume = 0.5;
 const startBtn = document.getElementById("startBtn");
 const startScreen = document.getElementById("startScreen");
 const quizScreen = document.getElementById("quizScreen");
@@ -61,6 +63,11 @@ function startTimer() {
         locked = true;
         revealCorrect();
         setTimeout(nextQuestion, 1000);
+         if (timeLeft <= 3 && timeLeft > 0) {
+           tickSound.currentTime = 0;
+           tickSound.play();
+}
+
       }
     }
   }, 1000);
