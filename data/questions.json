@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "question": "Testfråga 1",
+    "answers": ["A", "B", "C"],
+    "correct": 0
+  },
+  {
+    "question": "Testfråga 2",
+    "answers": ["1", "2", "3"],
+    "correct": 1
+  }
+]
