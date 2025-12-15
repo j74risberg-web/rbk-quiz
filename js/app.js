@@ -22,29 +22,25 @@ startBtn.addEventListener("click", async () => {
 });
 
 function render() {
-  const q = engine.current();
+  const q = engine.getCurrentQuestion();
 
-  // SLUT PÅ QUIZ
   if (!q) {
     quizScreen.classList.add("hidden");
     resultScreen.classList.remove("hidden");
-    finalResult.textContent = `Poäng: ${engine.score} / ${engine.questions.length}`;
+    finalResult.textContent = `Du fick ${engine.getScore()} poäng`;
     return;
   }
 
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
 
-  q.answers.forEach((answer, index) => {
+  q.answers.forEach((text, index) => {
     const btn = document.createElement("button");
-    btn.className = "option";
-    btn.textContent = answer;
-
+    btn.textContent = text;
     btn.onclick = () => {
       engine.answer(index);
       render();
     };
-
     optionsEl.appendChild(btn);
   });
 }
