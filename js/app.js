@@ -154,11 +154,15 @@ function showResult() {
 
   const score = engine.getScore();
   const total = engine.getTotal();
-  const percent = Math.round((score / total) * 100);
+
+  let medal = "🥉";
+  if (score === 5) medal = "🥇";
+  else if (score === 4) medal = "🥈";
+  else if (score === 3) medal = "🥉";
 
   finalResultEl.innerHTML = `
-   
-    <p>${score} / ${total} rätt</p>
+    <h2>${medal} Resultat</h2>
+    <p><strong>${score}</strong> / ${total} rätt</p>
   `;
 }
 
