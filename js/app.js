@@ -123,7 +123,7 @@ function handleAnswer(index, btn) {
   locked = true;
   clearInterval(timer);
 
-  const q = engine.currentQuestion()();
+  const q = engine.currentQuestion();
 
   if (index === q.correct) {
     btn.classList.add("correct");
