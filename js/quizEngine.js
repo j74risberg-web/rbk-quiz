@@ -1,8 +1,5 @@
 export class QuizEngine {
-  constructor({ difficulty, weekKey }) {
-    this.difficulty = difficulty;
-    this.weekKey = weekKey;
-
+  constructor() {
     this.state = {
       index: 0,
       score: 0,
@@ -12,31 +9,14 @@ export class QuizEngine {
 
   async loadQuestions() {
     const res = await fetch("./data/questions.json");
-    const allQuestions = await res.json();
+    const data = await res.json();
 
-    // filtrera på svårighetsgrad
-    const filtered = allQuestions.filter(
-      q => q.difficulty === this.difficulty
-    );
-
-    // blanda frågorna
-    const shuffled = filtered.sort(() => 0.5 - Math.random());
-
-    // hur många frågor per svårighetsgrad
-    const config = {
-      easy: 3,
-      hard: 4,
-      brutal: 5
-    };
-
-    this.state.questions = shuffled.slice(
-      0,
-      config[this.difficulty] || 4
-    );
+    // FÖR SÄKERHET: tvinga array
+    this.state.questions = Array.isArray(data) ? data : [];
   }
 
   current() {
-    return this.state.questions[this.state.index];
+    return this.state.questions[this.state.index] || null;
   }
 
   answer(choiceIndex) {
