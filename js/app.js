@@ -46,7 +46,8 @@ startBtn.onclick = async () => {
 ===================== */
 function stopTimer() {
   if (timer) {
-    clearInterval(timer);
+   stopTimer();
+
     timer = null;
   }
 
