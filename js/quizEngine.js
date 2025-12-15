@@ -1,33 +1,54 @@
 export class QuizEngine {
-  constructor() {
-    this.state = {
-      index: 0,
-      score: 0,
-      questions: []
-    };
+  constructor(options = {}) {
+    this.dataUrl = options.dataUrl || "./data/questions.json";
+
+    this.questions = [];
+    this.index = 0;
+    this.score = 0;
   }
 
   async loadQuestions() {
-    const res = await fetch("./data/questions.json");
-    const data = await res.json();
+    const response = await fetch(this.dataUrl);
+    const data = await response.json();
 
-    // FÖR SÄKERHET: tvinga array
-    this.state.questions = Array.isArray(data) ? data : [];
+    if (!Array.isArray(data)) {
+      throw new Error("questions.json måste vara en array");
+    }
+
+    this.questions = data;
+    this.index = 0;
+    this.score = 0;
+
+    console.log("Frågor laddade:", this.questions.length);
   }
 
   current() {
-    return this.state.questions[this.state.index] || null;
+    if (this.index >= this.questions.length) {
+      return null;
+    }
+    return this.questions[this.index];
   }
 
-  answer(choiceIndex) {
-    const q = this.current();
-    if (!q) return true;
+  answer(answerIndex) {
+    const question = this.current();
+    if (!question) return;
 
-    if (choiceIndex === q.correct) {
-      this.state.score++;
+    if (answerIndex === question.correct) {
+      this.score++;
     }
 
-    this.state.index++;
-    return this.state.index >= this.state.questions.length;
+    this.index++;
+  }
+
+  isFinished() {
+    return this.index >= this.questions.length;
+  }
+
+  getScore() {
+    return this.score;
+  }
+
+  getTotal() {
+    return this.questions.length;
   }
 }
