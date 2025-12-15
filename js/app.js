@@ -44,6 +44,17 @@ startBtn.onclick = async () => {
 /* =====================
    TIMER
 ===================== */
+function stopTimer() {
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
+
+  // stoppa tick-ljud om det spelas
+  tickSound.pause();
+  tickSound.currentTime = 0;
+}
+
 function startTimer() {
   clearInterval(timer);          // ⛔ stoppa eventuell gammal timer
   timeLeft = 10;
