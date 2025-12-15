@@ -1,5 +1,6 @@
 import { QuizEngine } from "./quizEngine.js";
 
+// DOM
 const startBtn = document.getElementById("startBtn");
 const startScreen = document.getElementById("startScreen");
 const quizScreen = document.getElementById("quizScreen");
@@ -7,14 +8,13 @@ const resultScreen = document.getElementById("resultScreen");
 
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
-const finalResult = document.getElementById("finalResult");
+const finalResultEl = document.getElementById("finalResult");
 
 let engine;
 
+// Start
 startBtn.addEventListener("click", async () => {
-  engine = new QuizEngine({
-    dataUrl: "./data/questions.json",
-  });
+  engine = new QuizEngine();
 
   await engine.loadQuestions();
 
@@ -25,20 +25,25 @@ startBtn.addEventListener("click", async () => {
 });
 
 function render() {
-  const q = engine.current();
+  const question = engine.getCurrentQuestion();
 
-  if (!q) {
+  // Slut på quiz
+  if (!question) {
     quizScreen.classList.add("hidden");
     resultScreen.classList.remove("hidden");
-    finalResult.textContent = `Poäng: ${engine.state.score}`;
+
+    finalResultEl.textContent =
+      `Du fick ${engine.getScore()} av ${engine.getTotal()} rätt`;
+
     return;
   }
 
-  questionEl.textContent = q.question;
+  // Visa fråga
+  questionEl.textContent = question.question;
   optionsEl.innerHTML = "";
 
-  q.answers.forEach((answer, index) => {
-    const btn = document.createElement("div");
+  question.answers.forEach((answer, index) => {
+    const btn = document.createElement("button");
     btn.className = "option";
     btn.textContent = answer;
 
@@ -50,4 +55,3 @@ function render() {
     optionsEl.appendChild(btn);
   });
 }
-
