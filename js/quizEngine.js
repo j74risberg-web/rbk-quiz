@@ -5,34 +5,38 @@ export class QuizEngine {
     this.score = 0;
   }
 
-  async loadQuestions(url = "./data/questions.json") {
-    const res = await fetch(url);
+  async loadQuestions() {
+    const res = await fetch("./data/questions.json");
     const data = await res.json();
 
     if (!Array.isArray(data)) {
-      throw new Error("questions.json måste vara en array");
+      throw new Error("questions.json attaching är felaktig");
     }
 
     this.questions = data;
-    this.index = 0;
-    this.score = 0;
-
     console.log("Frågor laddade:", this.questions.length);
   }
 
   getCurrentQuestion() {
-    return this.questions[this.index] ?? null;
+    return this.questions[this.index] || null;
   }
 
-  answer(choiceIndex) {
+  answer(answerIndex) {
     const q = this.getCurrentQuestion();
-    if (!q) return true;
+    if (!q) return;
 
-    if (choiceIndex === q.correct) {
+    if (answerIndex === q.correct) {
       this.score++;
     }
 
     this.index++;
+  }
+
+  isFinished() {
     return this.index >= this.questions.length;
+  }
+
+  getScore() {
+    return this.score;
   }
 }
