@@ -192,6 +192,7 @@ function showResult() {
   const total = engine.getTotal();
   const name = localStorage.getItem("rbkPlayerName") || "Okänd";
 
+  // 🏅 Medalj – procentbaserad
   let medal = "";
   const percent = score / total;
 
@@ -199,10 +200,12 @@ function showResult() {
   else if (percent >= 0.8) medal = "🥈";
   else if (percent >= 0.6) medal = "🥉";
 
+  // Titel
   if (resultTitle) {
     resultTitle.textContent = `Grattis ${name}!`;
   }
 
+  // Resultattext
   finalResultEl.innerHTML = `
     <div style="text-align:center; font-size:64px; margin-bottom:16px;">
       ${medal}
@@ -215,8 +218,8 @@ function showResult() {
     </p>
   `;
 
+  // 🏆 Uppdatera high score & veckans vinnare
   handleHighScore(name, score);
   handleWeeklyWinner(name, score);
 }
-
 
