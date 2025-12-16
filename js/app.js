@@ -222,4 +222,42 @@ function showResult() {
   handleHighScore(name, score);
   handleWeeklyWinner(name, score);
 }
+function handleHighScore(name, score) {
+  const saved = JSON.parse(localStorage.getItem("rbkHighScore"));
+
+  if (!saved || score > saved.score) {
+    const record = { name, score };
+    localStorage.setItem("rbkHighScore", JSON.stringify(record));
+
+    if (highScoreText) {
+      highScoreText.textContent =
+        `🥇 ${record.name} – ${record.score} poäng`;
+    }
+  } else {
+    if (highScoreText) {
+      highScoreText.textContent =
+        `🥇 ${saved.name} – ${saved.score} poäng`;
+    }
+  }
+}
+
+function handleWeeklyWinner(name, score) {
+  const weekKey = `rbkWeekly-${getWeekKey()}`;
+  const saved = JSON.parse(localStorage.getItem(weekKey));
+
+  if (!saved || score > saved.score) {
+    const winner = { name, score };
+    localStorage.setItem(weekKey, JSON.stringify(winner));
+
+    if (weeklyWinnerText) {
+      weeklyWinnerText.textContent =
+        `⭐ ${winner.name} – ${winner.score} poäng`;
+    }
+  } else {
+    if (weeklyWinnerText) {
+      weeklyWinnerText.textContent =
+        `⭐ ${saved.name} – ${saved.score} poäng`;
+    }
+  }
+}
 
