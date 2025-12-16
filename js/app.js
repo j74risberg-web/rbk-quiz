@@ -43,6 +43,24 @@ function getWeekKey() {
   );
   return `${now.getFullYear()}-W${week}`;
 }
+function getCurrentWeekLabel() {
+  const now = new Date();
+
+  // ISO-vecka (svensk standard)
+  const currentThursday = new Date(now);
+  currentThursday.setDate(
+    now.getDate() + 3 - ((now.getDay() + 6) % 7)
+  );
+
+  const firstThursday = new Date(currentThursday.getFullYear(), 0, 4);
+  const week =
+    1 +
+    Math.round(
+      ((currentThursday - firstThursday) / 86400000 - 3) / 7
+    );
+
+  return `Vecka ${week}`;
+}
 
 
 
@@ -221,8 +239,10 @@ async function showResult() {
 
   // Titel
   if (resultTitle) {
-    resultTitle.textContent = `Grattis ${name}!`;
-  }
+  const weekLabel = getCurrentWeekLabel();
+  resultTitle.textContent = `RBK Quiz – ${weekLabel}`;
+}
+
 
   // Resultattext
   finalResultEl.innerHTML = `
