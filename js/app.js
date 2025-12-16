@@ -245,16 +245,20 @@ async function showResult() {
 ===================== */
 
 async function saveHighscore(name, score) {
-  if (!name || typeof score !== "number") return;
-
   const { error } = await supabase
     .from("highscores")
     .insert([{ name, score }]);
 
   if (error) {
-    console.error("Supabase save error:", error.message);
+    if (error.code === "23505") {
+      console.log("Din poäng är redan sparad för idag");
+      // här kan du visa text i UI om du vill
+    } else {
+      console.error("Supabase save error:", error.message);
+    }
   }
 }
+
 
 async function loadTopFive() {
   const { data, error } = await supabase
