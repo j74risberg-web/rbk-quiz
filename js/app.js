@@ -69,14 +69,18 @@ startBtn.onclick = async () => {
   tickSound.pause();
   tickSound.volume = 0.5;
 
-  engine = new QuizEngine();
-  await engine.loadQuestions();
+ engine = new QuizEngine();
+await engine.loadQuestions();
 
-  startScreen.classList.add("hidden");
-  resultScreen.classList.add("hidden");
-  quizScreen.classList.remove("hidden");
+// 🔄 NOLLSTÄLL SPELSTATE
+totalTime = 0;
+questionStartTime = 0;
 
-  renderQuestion();
+startScreen.classList.add("hidden");
+resultScreen.classList.add("hidden");
+quizScreen.classList.remove("hidden");
+
+renderQuestion();
 };
 
 
