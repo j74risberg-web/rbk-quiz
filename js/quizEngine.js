@@ -17,9 +17,9 @@ export class QuizEngine {
     const categories = Object.keys(places);
     const questions = [];
 
-    // Slumpa max 4 frågor, en per kategori
+    // Slumpa max 5 frågor, en per kategori
     shuffle(categories)
-      .slice(0, 4)
+      .slice(0, 5)
       .forEach(category => {
         const list = places[category];
         if (!list || list.length < 4) return;
