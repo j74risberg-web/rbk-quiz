@@ -322,10 +322,14 @@ async function renderTopFiveGlobal() {
     else if (index === 1) medal = "🥈";
     else if (index === 2) medal = "🥉";
 
+    const displayName = formatName(item.name);
+
     const li = document.createElement("li");
     li.innerHTML = `
-      ${medal} <strong>${item.name}</strong> – ${item.score} poäng
+      ${medal} <strong>${displayName}</strong> – ${item.score} poäng
     `;
+
+
     topFiveList.appendChild(li);
   });
 }
