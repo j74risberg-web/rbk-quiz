@@ -216,10 +216,12 @@ if (resultTitle) {
     <p style="text-align:center; font-size:18px;">
       ${score} / ${total} rätt
     </p>
-    <p style="text-align:center; color:var(--text-muted);">
-      Grattis, veckans trisslott kommer som ett SMS 🎉
-    </p>
-  `;
+   <!--
+  <p style="text-align:center; color:var(--text-muted);">
+    Grattis, veckans trisslott kommer som ett SMS 🎉
+  </p>
+  -->
+`;
 
   // 🏆 Uppdatera high score & veckans vinnare
   handleTopFive(name, score);
