@@ -354,6 +354,26 @@ if (location.hash === "#admin") {
 
   document.body.appendChild(btn);
 }
+async function adminReset() {
+  const ok = confirm(
+    "Är du säker?\n\nDetta raderar ALLA highscores."
+  );
+
+  if (!ok) return;
+
+  const { error } = await supabase
+    .from("highscores")
+    .delete()
+    .neq("id", 0); // raderar alla rader
+
+  if (error) {
+    alert("❌ Kunde inte rensa highscores");
+    console.error(error);
+  } else {
+    alert("✅ Highscore rensad");
+    location.reload();
+  }
+}
 
  
 
