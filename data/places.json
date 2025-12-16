@@ -46,7 +46,7 @@
     { "name": "Under Bron", "address": "Skanstullsbron" },
     { "name": "Slakthuset", "address": "Styckmästargatan" },
     { "name": "Rose Club", "address": "Hamngatan" },
-    { "name": "V", "address": "Sturegatan" },
+    { "name": "V***** Club", "address": "Sturegatan" },
     { "name": "Backdoor", "address": "Arenavägen" },
     { "name": "Golden Hits", "address": "Kungsgatan" },
     { "name": "Hell's Kitchen", "address": "Sturegatan" },
@@ -85,8 +85,8 @@
     { "name": "ICA HQ", "address": "Kungsgatan" },
     { "name": "SKF Sverige HQ", "address": "Birger Jarlsgatan" },
     { "name": "ABB Sverige HQ", "address": "Humlegårdsgatan" },
-    { "name": "Microsoft Sverige", "address": "Regeringsgatan" },
-    { "name": "Google Sverige", "address": "Kungsbron" }
+    { "name": "Microsoft Sverige HQ", "address": "Regeringsgatan" },
+    { "name": "Google Sverige HQ", "address": "Kungsbron" }
   ],
 
   "ambassader": [
