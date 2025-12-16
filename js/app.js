@@ -379,13 +379,15 @@ async function adminReset() {
   );
   if (!ok) return;
 
-  const { error } = await supabase.rpc("reset_highscores", {
+  const res = await supabase.rpc("reset_highscores", {
     secret: "RBK_ADMIN_2025"
   });
 
-  if (error) {
-    alert("❌ Kunde inte rensa highscores");
-    console.error(error);
+  console.log("RPC response:", res);
+
+  if (res.error) {
+    alert("❌ " + res.error.message);
+    console.error(res.error);
   } else {
     alert("✅ Highscore rensad");
     location.reload();
