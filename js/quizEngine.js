@@ -1,3 +1,29 @@
+const CATEGORY_META = {
+  hotell: {
+    label: "Hotell",
+    icon: "🛏️"
+  },
+  restauranger: {
+    label: "Restaurang",
+    icon: "🍽️"
+  },
+  nattklubbar: {
+    label: "Nattklubb",
+    icon: "💃"
+  },
+  teatrar_biografer: {
+    label: "Teater / Bio",
+    icon: "🎭"
+  },
+  huvudkontor: {
+    label: "Huvudkontor",
+    icon: "💼"
+  },
+  ambassader: {
+    label: "Ambassad",
+    icon: "🏛️"
+  }
+};
 export class QuizEngine {
   constructor() {
     this.questions = [];
