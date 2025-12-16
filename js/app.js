@@ -274,9 +274,10 @@ const name = rawName.trim().toLowerCase();
 ===================== */
 
 async function saveHighscore(name, score) {
+   const week = getWeekKey(); // t.ex. "2025-W51"
   const { error } = await supabase
     .from("highscores")
-    .insert([{ name, score }]);
+    .insert([{ name, score, week }]);
 
  if (error) {
   if (error.code === "23505") {
