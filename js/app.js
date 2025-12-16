@@ -278,29 +278,23 @@ function renderTopFive(list) {
   });
 }
 
-
-
 function handleWeeklyWinner() {
   const weekKey = `rbkWeekly-${getWeekKey()}`;
 
-  // Hämta topplistan
   const topFive = JSON.parse(localStorage.getItem("rbkTopFive")) || [];
-
-  // Ingen vinnare om listan är tom
   if (!topFive.length) return;
 
-  // 🥇 Plats 1 = veckans vinnare
   const winner = topFive[0];
-
-  // Spara veckans vinnare (valfritt men bra)
   localStorage.setItem(weekKey, JSON.stringify(winner));
 
-  // Visa i UI
+  // ⛔ TILLFÄLLIGT AVSTÄNGD VISNING
+  /*
   if (weeklyWinnerText) {
     weeklyWinnerText.textContent =
       `⭐ ${winner.name} – ${winner.score} poäng`;
-
   }
+  */
 }
+
 
 
