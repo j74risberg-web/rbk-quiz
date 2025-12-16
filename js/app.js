@@ -1,4 +1,10 @@
-import { QuizEngine } from "./quizEngine.js";
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const SUPABASE_URL = "https://DITT-PROJEKT-ID.supabase.co";
+const SUPABASE_ANON_KEY = "DIN-ANON-PUBLIC-KEY";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 
 /* =====================
    DOM
@@ -194,7 +200,7 @@ function handleAnswer(index, btn) {
    RESULTAT
 ===================== */
 
-function showResult() {
+async function showResult() {
   quizScreen.classList.add("hidden");
   resultScreen.classList.remove("hidden");
 
@@ -211,10 +217,9 @@ function showResult() {
   else if (percent >= 0.6) medal = "🥉";
 
   // Titel
-if (resultTitle) {
-  resultTitle.textContent = `Grattis ${name}!`;
-}
-
+  if (resultTitle) {
+    resultTitle.textContent = `Grattis ${name}!`;
+  }
 
   // Resultattext
   finalResultEl.innerHTML = `
@@ -224,77 +229,67 @@ if (resultTitle) {
     <p style="text-align:center; font-size:18px;">
       ${score} / ${total} rätt
     </p>
-   <!--
-  <p style="text-align:center; color:var(--text-muted);">
-    Grattis, veckans trisslott kommer som ett SMS 🎉
-  </p>
-  -->
-`;
+  `;
 
-  // 🏆 Uppdatera high score & veckans vinnare
-  handleTopFive(name, score);
-handleWeeklyWinner();
-}
-function handleTopFive(name, score) {
-  const key = "rbkTopFive";
-  const saved = JSON.parse(localStorage.getItem(key)) || [];
-
-  saved.push({
-    name,
-    score,
-    time: totalTime
-  });
-
-  saved.sort((a, b) =>
-    b.score - a.score || a.time - b.time
-  );
-
-  const topFive = saved.slice(0, 5);
-
-  localStorage.setItem(key, JSON.stringify(topFive));
-  renderTopFive(topFive);
+  // 🏆 GLOBAL highscore (Supabase)
+  await saveHighscore(name, score);
+  await renderTopFiveGlobal();
 }
 
-function renderTopFive(list) {
+
+/* =====================
+   SUPABASE – HIGHSCORE
+===================== */
+
+async function saveHighscore(name, score) {
+  if (!name || typeof score !== "number") return;
+
+  const { error } = await supabase
+    .from("highscores")
+    .insert([{ name, score }]);
+
+  if (error) {
+    console.error("Supabase save error:", error.message);
+  }
+}
+
+async function loadTopFive() {
+  const { data, error } = await supabase
+    .from("highscores")
+    .select("name, score")
+    .order("score", { ascending: false })
+    .order("created_at", { ascending: true })
+    .limit(5);
+
+  if (error) {
+    console.error("Supabase load error:", error.message);
+    return [];
+  }
+
+  return data;
+}
+
+async function renderTopFiveGlobal() {
   if (!topFiveList) return;
 
+  const list = await loadTopFive();
   topFiveList.innerHTML = "";
 
   list.forEach((item, index) => {
-    const li = document.createElement("li");
-
-    let medal = "";
-
+    let medal = "🎖️";
     if (index === 0) medal = "🥇";
     else if (index === 1) medal = "🥈";
     else if (index === 2) medal = "🥉";
-    else medal = "🎖️"; // 4:e & 5:e plats
 
+    const li = document.createElement("li");
     li.innerHTML = `
       ${medal} <strong>${item.name}</strong> – ${item.score} poäng
     `;
-
     topFiveList.appendChild(li);
   });
 }
 
-function handleWeeklyWinner() {
-  const weekKey = `rbkWeekly-${getWeekKey()}`;
-
-  const topFive = JSON.parse(localStorage.getItem("rbkTopFive")) || [];
-  if (!topFive.length) return;
-
-  const winner = topFive[0];
-  localStorage.setItem(weekKey, JSON.stringify(winner));
-
-  // ⛔ TILLFÄLLIGT AVSTÄNGD VISNING
-  /*
-  if (weeklyWinnerText) {
-    weeklyWinnerText.textContent =
-      `⭐ ${winner.name} – ${winner.score} poäng`;
-  }
-  */
-}
+ 
 
 
 
