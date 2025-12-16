@@ -145,7 +145,7 @@ function renderQuestion() {
   locked = false;
 
   const q = engine.currentQuestion();
-  questionEl.textContent = q.question;
+  questionEl.innerHTML = q.question;
   optionsEl.innerHTML = "";
 
   startTimer(); // ✅ starta NY timer här
