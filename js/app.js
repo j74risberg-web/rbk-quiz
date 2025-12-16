@@ -3,6 +3,11 @@ import { QuizEngine } from "./quizEngine.js";
 /* =====================
    DOM
 ===================== */
+const nameInput = document.getElementById("playerNameInput");
+const highScoreText = document.getElementById("highScoreText");
+const weeklyWinnerText = document.getElementById("weeklyWinnerText");
+const resultTitle = document.getElementById("resultTitle");
+
 const startBtn = document.getElementById("startBtn");
 const startScreen = document.getElementById("startScreen");
 const quizScreen = document.getElementById("quizScreen");
@@ -31,6 +36,11 @@ tickSound.volume = 0.5;
    START
 ===================== */
 startBtn.onclick = async () => {
+  const playerName = nameInput.value.trim();
+  if (playerName.length < 2) return;
+
+  localStorage.setItem("rbkPlayerName", playerName);
+
   // 🔓 iOS: lås upp ljud
   tickSound.currentTime = 0;
   tickSound.volume = 0;
