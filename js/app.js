@@ -269,15 +269,20 @@ async function saveHighscore(name, score) {
     .from("highscores")
     .insert([{ name, score }]);
 
-  if (error) {
-    if (error.code === "23505") {
-      console.log("Din poäng är redan sparad för idag");
-      // här kan du visa text i UI om du vill
-    } else {
-      console.error("Supabase save error:", error.message);
-    }
+ if (error) {
+  if (error.code === "23505") {
+    finalResultEl.insertAdjacentHTML(
+      "beforeend",
+      `<p style="text-align:center; margin-top:12px; opacity:0.7;">
+        Endast första spelet per dag räknas
+      </p>`
+    );
+  } else {
+    console.error("Supabase save error:", error.message);
   }
 }
+}
+
 
 
 async function loadTopFive() {
