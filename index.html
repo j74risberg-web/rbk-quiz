@@ -152,6 +152,26 @@
   margin-right: 8px;
   vertical-align: middle;
 }
+/* === TOPPLISTA === */
+.toplist-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+#topFiveList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+
+  font-size: 22px;      /* ⬅️ större text */
+  font-weight: 600;
+  line-height: 1.9;
+}
+
+#topFiveList li {
+  margin: 6px 0;
+}
 
 
 </style>
@@ -205,13 +225,18 @@
   <h3>🏆 High score</h3>
 <p id="highScoreText" style="text-align:center;"></p>
 
-<h3>🏆 Top 5</h3>
-<ol id="topFiveList" style="padding-left:20px;"></ol>
+<h2 style="text-align:center;">🏆 Top 5</h2>
+
+<div class="toplist-wrapper">
+  <ol id="topFiveList"></ol>
+</div>
 
 
+ <!--
+<h3>⭐ Veckans vinnare</h3>
+<p id="weeklyWinnerText" style="text-align:center;"></p>
+-->
 
-  <h3>⭐ Veckans vinnare</h3>
-  <p id="weeklyWinnerText" style="text-align:center;"></p>
 
   <button onclick="location.reload()">Spela igen</button>
 </div>
@@ -221,6 +246,7 @@
   <script type="module" src="./js/app.js"></script>
 </body>
 </html>
+
 
 
 
