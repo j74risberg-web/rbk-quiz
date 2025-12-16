@@ -356,7 +356,7 @@ if (startTitle) {
   const weekLabel = getCurrentWeekLabel();
   startTitle.textContent = `RBK Quiz – ${weekLabel}`;
 }
-if (location.hash === "#admin") {
+if (location.hash === "#admin-rbk-2025") {
   const btn = document.createElement("button");
   btn.textContent = "🔄 RESET HIGHSCORE";
   btn.style.margin = "20px auto";
@@ -377,13 +377,11 @@ async function adminReset() {
   const ok = confirm(
     "Är du säker?\n\nDetta raderar ALLA highscores."
   );
-
   if (!ok) return;
 
-  const { error } = await supabase
-    .from("highscores")
-    .delete()
-    .neq("id", 0); // raderar alla rader
+  const { error } = await supabase.rpc("reset_highscores", {
+    secret: "RBK_ADMIN_2025"
+  });
 
   if (error) {
     alert("❌ Kunde inte rensa highscores");
