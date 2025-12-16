@@ -227,7 +227,9 @@ async function showResult() {
 
   const score = engine.getScore();
   const total = engine.getTotal();
-  const name = localStorage.getItem("rbkPlayerName") || "Okänd";
+  const rawName = localStorage.getItem("rbkPlayerName") || "Okänd";
+const name = rawName.trim().toLowerCase();
+
 
   // 🏅 Medalj – procentbaserad
   let medal = "";
