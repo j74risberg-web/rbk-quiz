@@ -12,6 +12,8 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 /* =====================
    DOM
 ===================== */
+const startTitle = document.getElementById("startTitle");
+
 const nameInput = document.getElementById("playerNameInput");
 const highScoreText = document.getElementById("highScoreText");
 const weeklyWinnerText = document.getElementById("weeklyWinnerText");
@@ -59,6 +61,11 @@ function getCurrentWeekLabel() {
     );
 
   return `Vecka ${week}`;
+}
+
+function formatName(name) {
+  if (!name) return "";
+  return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
 
@@ -321,6 +328,10 @@ async function renderTopFiveGlobal() {
     `;
     topFiveList.appendChild(li);
   });
+}
+if (startTitle) {
+  const weekLabel = getCurrentWeekLabel();
+  startTitle.textContent = `RBK Quiz – ${weekLabel}`;
 }
 
  
