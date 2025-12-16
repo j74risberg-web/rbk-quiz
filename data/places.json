@@ -3,43 +3,107 @@
     { "name": "Sheraton Stockholm", "address": "Tegelbacken" },
     { "name": "Grand Hôtel", "address": "Södra Blasieholmshamnen" },
     { "name": "Scandic Continental", "address": "Vasagatan" },
-    { "name": "Radisson Blu Waterfront", "address": "Nils Ericsons Plan" }
+    { "name": "Radisson Blu Waterfront", "address": "Nils Ericsons Plan" },
+    { "name": "Hotel Diplomat", "address": "Strandvägen" },
+    { "name": "Berns Hotel", "address": "Näckströmsgatan" },
+    { "name": "At Six", "address": "Brunkebergstorg" },
+    { "name": "Haymarket by Scandic", "address": "Hötorget" },
+    { "name": "Elite Plaza Hotel", "address": "Vasagatan" },
+    { "name": "Clarion Hotel Sign", "address": "Östra Järnvägsgatan" },
+    { "name": "Lydmar Hotel", "address": "Södra Blasieholmshamnen" },
+    { "name": "Hotel Rival", "address": "Mariatorget" },
+    { "name": "Miss Clara Hotel", "address": "Sveavägen" },
+    { "name": "Downtown Camper", "address": "Brunkebergstorg" },
+    { "name": "Story Hotel Riddargatan", "address": "Riddargatan" }
   ],
 
   "restauranger": [
     { "name": "Operakällaren", "address": "Karl XII:s torg" },
     { "name": "Pelikan", "address": "Blekingegatan" },
     { "name": "Riche", "address": "Birger Jarlsgatan" },
-    { "name": "Tradition", "address": "Österlånggatan" }
+    { "name": "Tradition", "address": "Österlånggatan" },
+    { "name": "Smorgastarteriet", "address": "Tullhus 2" },
+    { "name": "Oaxen Slip", "address": "Beckholmsvägen" },
+    { "name": "Frantzén", "address": "Klara Norra Kyrkogata" },
+    { "name": "Tennstopet", "address": "Dalagatan" },
+    { "name": "AG", "address": "Kronobergsgatan" },
+    { "name": "Den Gyldene Freden", "address": "Österlånggatan" },
+    { "name": "Sturehof", "address": "Stureplan" },
+    { "name": "Vassa Eggen", "address": "Kungsbron" },
+    { "name": "Rolfs Kök", "address": "Tegnérgatan" },
+    { "name": "Lisa Elmqvist", "address": "Östermalmshallen" },
+    { "name": "Brasserie Astoria", "address": "Nybroplan" }
   ],
 
   "nattklubbar": [
     { "name": "Sturecompagniet", "address": "Sturegatan" },
     { "name": "Spy Bar", "address": "Birger Jarlsgatan" },
     { "name": "Café Opera", "address": "Karl XII:s torg" },
-    { "name": "Nattklubben Trädgården", "address": "Hammarby Slussväg" }
+    { "name": "Trädgården", "address": "Hammarby Slussväg" },
+    { "name": "Bern's", "address": "Näckströmsgatan" },
+    { "name": "F12", "address": "Fredsgatan" },
+    { "name": "Patricia", "address": "Söder Mälarstrand" },
+    { "name": "Under Bron", "address": "Skanstullsbron" },
+    { "name": "Slakthuset", "address": "Styckmästargatan" },
+    { "name": "Rose Club", "address": "Hamngatan" },
+    { "name": "V", "address": "Sturegatan" },
+    { "name": "Backdoor", "address": "Arenavägen" },
+    { "name": "Golden Hits", "address": "Kungsgatan" },
+    { "name": "Hell's Kitchen", "address": "Sturegatan" },
+    { "name": "Etage", "address": "Sturegatan" }
   ],
 
   "teatrar_biografer": [
     { "name": "Dramaten", "address": "Nybroplan" },
     { "name": "Göta Lejon", "address": "Götgatan" },
     { "name": "Skandia-Teatern", "address": "Drottninggatan" },
-    { "name": "Filmstaden Sergel", "address": "Hötorget" }
+    { "name": "Filmstaden Sergel", "address": "Hötorget" },
+    { "name": "Chinateatern", "address": "Berzelii Park" },
+    { "name": "Oscarsteatern", "address": "Kungsgatan" },
+    { "name": "Rival", "address": "Mariatorget" },
+    { "name": "Södra Teatern", "address": "Mosebacke Torg" },
+    { "name": "Cirkus", "address": "Djurgårdsslätten" },
+    { "name": "Intiman", "address": "Odenplan" },
+    { "name": "Bio Rio", "address": "Hornstulls Strand" },
+    { "name": "Zita Folkets Bio", "address": "Birger Jarlsgatan" },
+    { "name": "Kulturhuset Stadsteatern", "address": "Sergels Torg" },
+    { "name": "Victoria", "address": "Götgatan" },
+    { "name": "Maximteatern", "address": "Karlaplan" }
   ],
 
   "huvudkontor": [
     { "name": "Spotify HQ", "address": "Regeringsgatan" },
     { "name": "H&M HQ", "address": "Mäster Samuelsgatan" },
     { "name": "SEB HQ", "address": "Kungsträdgårdsgatan" },
-    { "name": "Ericsson HQ", "address": "Torshamnsgatan" }
+    { "name": "Ericsson HQ", "address": "Torshamnsgatan" },
+    { "name": "Telia HQ", "address": "Stjärntorget" },
+    { "name": "Klarna HQ", "address": "Sveavägen" },
+    { "name": "Electrolux HQ", "address": "S:t Göransgatan" },
+    { "name": "Atlas Copco HQ", "address": "Sickla Industriväg" },
+    { "name": "Nordea HQ", "address": "Hamngatan" },
+    { "name": "Handelsbanken HQ", "address": "Blasieholmstorg" },
+    { "name": "ICA HQ", "address": "Kungsgatan" },
+    { "name": "SKF Sverige HQ", "address": "Birger Jarlsgatan" },
+    { "name": "ABB Sverige HQ", "address": "Humlegårdsgatan" },
+    { "name": "Microsoft Sverige", "address": "Regeringsgatan" },
+    { "name": "Google Sverige", "address": "Kungsbron" }
   ],
 
   "ambassader": [
-  { "name": "USA:s ambassad","address": "Dag Hammarskjölds väg" },
-  { "name": "Storbritanniens ambassad", "address": "Skarpskyttestigen" },
-  { "name": "Tysklands ambassad", "address": "Skarpskyttestigen" },
-  { "name": "Frankrikes ambassad", "address": "Kommendörsgatan" }
-]
-
+    { "name": "USA:s ambassad", "address": "Dag Hammarskjölds väg" },
+    { "name": "Storbritanniens ambassad", "address": "Skarpskyttestigen" },
+    { "name": "Tysklands ambassad", "address": "Skarpskyttestigen" },
+    { "name": "Frankrikes ambassad", "address": "Kommendörsgatan" },
+    { "name": "Norges ambassad", "address": "Skarpskyttestigen" },
+    { "name": "Danmarks ambassad", "address": "Jakobsbergsgatan" },
+    { "name": "Finlands ambassad", "address": "Gärdesgatan" },
+    { "name": "Italiens ambassad", "address": "Gärdesgatan" },
+    { "name": "Spaniens ambassad", "address": "Djurgårdsvägen" },
+    { "name": "Japans ambassad", "address": "Gärdesgatan" },
+    { "name": "Kanadas ambassad", "address": "Artillerigatan" },
+    { "name": "Australiens ambassad", "address": "Karlavägen" },
+    { "name": "Brasiliens ambassad", "address": "Odengatan" },
+    { "name": "Mexikos ambassad", "address": "Tegnérgatan" },
+    { "name": "Sydkoreas ambassad", "address": "Lidingövägen" }
+  ]
 }
-
