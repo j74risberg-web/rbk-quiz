@@ -19,9 +19,12 @@ const finalResultEl = document.getElementById("finalResult");
 const timerEl = document.getElementById("timer");
 
 // Aktivera startknappen när namn skrivs
-nameInput.addEventListener("input", () => {
-  startBtn.disabled = nameInput.value.trim().length < 2;
-});
+if (nameInput) {
+  nameInput.addEventListener("input", () => {
+    startBtn.disabled = nameInput.value.trim().length < 2;
+  });
+}
+
 
 
 /* =====================
