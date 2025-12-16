@@ -188,17 +188,28 @@
     </div>
 
     <!-- RESULTAT -->
-    <div id="resultScreen" class="hidden">
-      <h2>Resultat</h2>
-      <div id="finalResult"></div>
-      <button onclick="location.reload()">Spela igen</button>
-    </div>
-  </div>
+<div id="resultScreen" class="hidden">
+  <h2 id="resultTitle">Resultat</h2>
+
+  <div id="finalResult"></div>
+
+  <hr style="margin:20px 0; border-color:var(--border);" />
+
+  <h3>🏆 High score</h3>
+  <p id="highScoreText" style="text-align:center;"></p>
+
+  <h3>⭐ Veckans vinnare</h3>
+  <p id="weeklyWinnerText" style="text-align:center;"></p>
+
+  <button onclick="location.reload()">Spela igen</button>
+</div>
+
 
   <!-- VIKTIGT: script sist -->
   <script type="module" src="./js/app.js"></script>
 </body>
 </html>
+
 
 
 
