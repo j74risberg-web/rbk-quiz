@@ -337,6 +337,23 @@ if (startTitle) {
   const weekLabel = getCurrentWeekLabel();
   startTitle.textContent = `RBK Quiz – ${weekLabel}`;
 }
+if (location.hash === "#admin") {
+  const btn = document.createElement("button");
+  btn.textContent = "🔄 RESET HIGHSCORE";
+  btn.style.margin = "20px auto";
+  btn.style.display = "block";
+  btn.style.background = "#dc2626";
+  btn.style.color = "#fff";
+  btn.style.padding = "14px";
+  btn.style.borderRadius = "12px";
+  btn.style.fontSize = "16px";
+  btn.style.fontWeight = "600";
+  btn.style.cursor = "pointer";
+
+  btn.onclick = adminReset;
+
+  document.body.appendChild(btn);
+}
 
  
 
