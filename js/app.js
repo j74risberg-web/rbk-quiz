@@ -203,9 +203,10 @@ function showResult() {
   else if (percent >= 0.6) medal = "🥉";
 
   // Titel
-  if (resultTitle) {
-    resultTitle.textContent = `Grattis ${name}!`;
-  }
+if (resultTitle) {
+  resultTitle.textContent = `Grattis ${name}!`;
+}
+
 
   // Resultattext
   finalResultEl.innerHTML = `
@@ -221,27 +222,51 @@ function showResult() {
   `;
 
   // 🏆 Uppdatera high score & veckans vinnare
-  handleHighScore(name, score);
+  handleTopFive(name, score);
   handleWeeklyWinner(name, score);
 }
-function handleHighScore(name, score) {
-  const saved = JSON.parse(localStorage.getItem("rbkHighScore"));
+function handleTopFive(name, score) {
+  const key = "rbkTopFive";
+  const saved = JSON.parse(localStorage.getItem(key)) || [];
 
-  if (!saved || score > saved.score) {
-    const record = { name, score };
-    localStorage.setItem("rbkHighScore", JSON.stringify(record));
+  // Lägg till nytt resultat
+  saved.push({
+    name,
+    score,
+    time: Date.now()
+  });
 
-    if (highScoreText) {
-      highScoreText.textContent =
-        `🥇 ${record.name} – ${record.score} poäng`;
-    }
-  } else {
-    if (highScoreText) {
-      highScoreText.textContent =
-        `🥇 ${saved.name} – ${saved.score} poäng`;
-    }
-  }
+  // Sortera: högst poäng först
+  saved.sort((a, b) => b.score - a.score);
+
+  // Behåll max 5
+  const topFive = saved.slice(0, 5);
+
+  // Spara
+  localStorage.setItem(key, JSON.stringify(topFive));
+
+  // Visa listan
+  renderTopFive(topFive);
 }
+function renderTopFive(list) {
+  if (!topFiveList) return;
+
+  topFiveList.innerHTML = "";
+
+  list.forEach((item, index) => {
+    const li = document.createElement("li");
+
+    // Markera 1:a plats
+    if (index === 0) {
+      li.innerHTML = `🥇 <strong>${item.name}</strong> – ${item.score} poäng`;
+    } else {
+      li.textContent = `${item.name} – ${item.score} poäng`;
+    }
+
+    topFiveList.appendChild(li);
+  });
+}
+
 
 function handleWeeklyWinner(name, score) {
   const weekKey = `rbkWeekly-${getWeekKey()}`;
@@ -262,5 +287,5 @@ function handleWeeklyWinner(name, score) {
     }
   }
 }
-window.getWeekKey = getWeekKey;
+
 
