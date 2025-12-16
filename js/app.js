@@ -268,4 +268,5 @@ function handleWeeklyWinner(name, score) {
     }
   }
 }
+window.getWeekKey = getWeekKey;
 
