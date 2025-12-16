@@ -155,10 +155,30 @@
   <div class="box">
     <h1>🏆 RBK Quiz</h1>
 
-    <!-- START -->
-    <div id="startScreen">
-      <button id="startBtn">Starta quiz</button>
-    </div>
+   <!-- START -->
+<div id="startScreen">
+  <h2>Vem spelar?</h2>
+
+  <input
+    type="text"
+    id="playerNameInput"
+    placeholder="Skriv ditt namn"
+    maxlength="20"
+    style="
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#020617;
+      color:var(--text-main);
+      font-size:16px;
+      margin-bottom:14px;
+    "
+  />
+
+  <button id="startBtn" disabled>Starta quiz</button>
+</div>
+
 
     <!-- QUIZ -->
     <div id="quizScreen" class="hidden">
@@ -179,6 +199,7 @@
   <script type="module" src="./js/app.js"></script>
 </body>
 </html>
+
 
 
 
