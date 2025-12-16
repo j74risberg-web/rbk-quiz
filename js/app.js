@@ -258,16 +258,21 @@ function renderTopFive(list) {
   list.forEach((item, index) => {
     const li = document.createElement("li");
 
-    // Markera 1:a plats
-    if (index === 0) {
-      li.innerHTML = `🥇 <strong>${item.name}</strong> – ${item.score} poäng`;
-    } else {
-      li.textContent = `${item.name} – ${item.score} poäng`;
-    }
+    let medal = "";
+
+    if (index === 0) medal = "🥇";
+    else if (index === 1) medal = "🥈";
+    else if (index === 2) medal = "🥉";
+    else medal = "🎖️"; // 4:e & 5:e plats
+
+    li.innerHTML = `
+      ${medal} <strong>${item.name}</strong> – ${item.score} poäng
+    `;
 
     topFiveList.appendChild(li);
   });
 }
+
 
 
 function handleWeeklyWinner(name, score) {
