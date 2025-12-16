@@ -17,6 +17,8 @@ const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const finalResultEl = document.getElementById("finalResult");
 const timerEl = document.getElementById("timer");
+const topFiveList = document.getElementById("topFiveList");
+
 
 // Aktivera startknappen när namn skrivs
 if (nameInput) {
