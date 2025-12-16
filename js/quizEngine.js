@@ -65,7 +65,8 @@ export class QuizEngine {
 
 questions.push({
   category,
-  question: `${meta.icon} Var ligger ${correct.name}?`,
+  question: `<span class="q-icon">${meta.icon}</span> Var ligger ${correct.name}?`,
+
   // question: `${meta.icon} ${meta.label}: Var ligger ${correct.name}?`, // ← kan aktiveras igen
   answers,
   correct: answers.indexOf(correct.address)
