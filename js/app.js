@@ -44,6 +44,8 @@ let engine = null;
 let timer = null;
 let timeLeft = 10;
 let locked = false;
+let totalTime = 0;
+let questionStartTime = 0;
 
 /* =====================
    LJUD
@@ -95,14 +97,14 @@ function stopTimer() {
 
 function startTimer() {
   stopTimer();
-          // ⛔ stoppa eventuell gammal timer
   timeLeft = 10;
   updateTimer();
+
+  questionStartTime = Date.now();
 
   timer = setInterval(() => {
     timeLeft--;
 
-    // 🔊 Tick vid 3, 2, 1
     if (timeLeft <= 3 && timeLeft > 0) {
       tickSound.currentTime = 0;
       tickSound.play();
@@ -110,14 +112,13 @@ function startTimer() {
 
     updateTimer();
 
-    // ⏱ TIDEN SLUT
     if (timeLeft <= 0) {
       stopTimer();
-      // ⛔ VIKTIGT: stoppa timern
-     
-      locked = true;
 
-      engine.answer(-1);         // räknas som fel / timeout
+      totalTime += Math.floor((Date.now() - questionStartTime) / 1000);
+
+      locked = true;
+      engine.answer(-1);
       setTimeout(renderQuestion, 800);
     }
   }, 1000);
@@ -149,7 +150,7 @@ function renderQuestion() {
   optionsEl.innerHTML = "";
 
   startTimer(); // ✅ starta NY timer här
-
+ 
   q.answers.forEach((answer, index) => {
     const btn = document.createElement("button");
     btn.className = "option";
@@ -167,6 +168,9 @@ function renderQuestion() {
 function handleAnswer(index, btn) {
   if (locked) return;
   locked = true;
+   
+   totalTime += Math.floor((Date.now() - questionStartTime) / 1000);
+
   stopTimer();
 
   const q = engine.currentQuestion();
@@ -231,25 +235,22 @@ function handleTopFive(name, score) {
   const key = "rbkTopFive";
   const saved = JSON.parse(localStorage.getItem(key)) || [];
 
-  // Lägg till nytt resultat
   saved.push({
     name,
     score,
-    time: Date.now()
+    time: totalTime
   });
 
-  // Sortera: högst poäng först
-  saved.sort((a, b) => b.score - a.score);
+  saved.sort((a, b) =>
+    b.score - a.score || a.time - b.time
+  );
 
-  // Behåll max 5
   const topFive = saved.slice(0, 5);
 
-  // Spara
   localStorage.setItem(key, JSON.stringify(topFive));
-
-  // Visa listan
   renderTopFive(topFive);
 }
+
 function renderTopFive(list) {
   if (!topFiveList) return;
 
