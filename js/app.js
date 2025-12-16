@@ -175,6 +175,15 @@ function handleAnswer(index, btn) {
 /* =====================
    RESULTAT
 ===================== */
+function getWeekKey() {
+  const now = new Date();
+  const firstDay = new Date(now.getFullYear(), 0, 1);
+  const week = Math.ceil(
+    ((now - firstDay) / 86400000 + firstDay.getDay() + 1) / 7
+  );
+  return `${now.getFullYear()}-W${week}`;
+}
+
 function showResult() {
   quizScreen.classList.add("hidden");
   resultScreen.classList.remove("hidden");
