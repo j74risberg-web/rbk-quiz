@@ -190,13 +190,18 @@ function showResult() {
 
   const score = engine.getScore();
   const total = engine.getTotal();
+  const name = localStorage.getItem("rbkPlayerName") || "Okänd";
 
   let medal = "";
+  const percent = score / total;
 
-  if (score === 5) medal = "🥇";
-  else if (score === 4) medal = "🥈";
-  else if (score === 3) medal = "🥉";
-  // 0–2 rätt → ingen medalj
+  if (percent === 1) medal = "🥇";
+  else if (percent >= 0.8) medal = "🥈";
+  else if (percent >= 0.6) medal = "🥉";
+
+  if (resultTitle) {
+    resultTitle.textContent = `Grattis ${name}!`;
+  }
 
   finalResultEl.innerHTML = `
     <div style="text-align:center; font-size:64px; margin-bottom:16px;">
@@ -205,8 +210,13 @@ function showResult() {
     <p style="text-align:center; font-size:18px;">
       ${score} / ${total} rätt
     </p>
+    <p style="text-align:center; color:var(--text-muted);">
+      Grattis, veckans trisslott kommer som ett SMS 🎉
+    </p>
   `;
-}
 
+  handleHighScore(name, score);
+  handleWeeklyWinner(name, score);
+}
 
 
