@@ -32,6 +32,14 @@
     { "name": "H&M HQ", "address": "Mäster Samuelsgatan" },
     { "name": "SEB HQ", "address": "Kungsträdgårdsgatan" },
     { "name": "Ericsson HQ", "address": "Torshamnsgatan" }
-  ]
+  ],
+
+  "ambassader": [
+  { "name": "USA:s ambassad","address": "Dag Hammarskjölds väg" },
+  { "name": "Storbritanniens ambassad", "address": "Skarpskyttestigen" },
+  { "name": "Tysklands ambassad", "address": "Skarpskyttestigen" },
+  { "name": "Frankrikes ambassad", "address": "Kommendörsgatan" }
+]
+
 }
 
