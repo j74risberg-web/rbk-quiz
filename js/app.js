@@ -29,6 +29,8 @@ const optionsEl = document.getElementById("options");
 const finalResultEl = document.getElementById("finalResult");
 const timerEl = document.getElementById("timer");
 const topFiveList = document.getElementById("topFiveList");
+const weeklyWinnersList = document.getElementById("weeklyWinnersList");
+
 
 
 // Aktivera startknappen när namn skrivs
@@ -310,6 +312,22 @@ async function loadTopFive() {
 
   return data;
 }
+
+async function loadWeeklyWinners() {
+  const { data, error } = await supabase
+    .from("weekly_winners")
+    .select("week, name, score")
+    .order("week", { ascending: false })
+    .limit(5);
+
+  if (error) {
+    console.error("Weekly winners error:", error.message);
+    return [];
+  }
+
+  return data;
+}
+
 
 async function renderTopFiveGlobal() {
   if (!topFiveList) return;
