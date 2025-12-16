@@ -229,7 +229,7 @@ if (resultTitle) {
 
   // 🏆 Uppdatera high score & veckans vinnare
   handleTopFive(name, score);
-  handleWeeklyWinner(name, score);
+handleWeeklyWinner();
 }
 function handleTopFive(name, score) {
   const key = "rbkTopFive";
@@ -276,23 +276,26 @@ function renderTopFive(list) {
 
 
 
-function handleWeeklyWinner(name, score) {
+function handleWeeklyWinner() {
   const weekKey = `rbkWeekly-${getWeekKey()}`;
-  const saved = JSON.parse(localStorage.getItem(weekKey));
 
-  if (!saved || score > saved.score) {
-    const winner = { name, score };
-    localStorage.setItem(weekKey, JSON.stringify(winner));
+  // Hämta topplistan
+  const topFive = JSON.parse(localStorage.getItem("rbkTopFive")) || [];
 
-    if (weeklyWinnerText) {
-      weeklyWinnerText.textContent =
-        `⭐ ${winner.name} – ${winner.score} poäng`;
-    }
-  } else {
-    if (weeklyWinnerText) {
-      weeklyWinnerText.textContent =
-        `⭐ ${saved.name} – ${saved.score} poäng`;
-    }
+  // Ingen vinnare om listan är tom
+  if (!topFive.length) return;
+
+  // 🥇 Plats 1 = veckans vinnare
+  const winner = topFive[0];
+
+  // Spara veckans vinnare (valfritt men bra)
+  localStorage.setItem(weekKey, JSON.stringify(winner));
+
+  // Visa i UI
+  if (weeklyWinnerText) {
+    weeklyWinnerText.textContent =
+      `⭐ ${winner.name} – ${winner.score} poäng`;
+
   }
 }
 
