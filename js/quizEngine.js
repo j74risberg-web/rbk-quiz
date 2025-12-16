@@ -32,7 +32,8 @@ export class QuizEngine {
   }
 
   async loadQuestions() {
-    const res = await fetch("./data/places.json");
+    const res = await fetch("/rbk-quiz/data/places.json");
+
     const places = await res.json();
 
     this.questions = this.generateQuestions(places);
