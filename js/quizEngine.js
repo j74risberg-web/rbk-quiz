@@ -61,12 +61,15 @@ export class QuizEngine {
           ...wrongs.map(p => p.address)
         ]);
 
-        questions.push({
-          question: `Var ligger ${correct.name}?`,
-          answers,
-          correct: answers.indexOf(correct.address),
-          category
-        });
+        const meta = CATEGORY_META[category];
+
+questions.push({
+  category,
+  question: `${meta.icon} ${meta.label}: Var ligger ${correct.name}?`,
+  answers,
+  correct: answers.indexOf(correct.address)
+});
+
       });
 
     return questions;
