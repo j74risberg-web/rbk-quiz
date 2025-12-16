@@ -31,6 +31,12 @@ tickSound.volume = 0.5;
    START
 ===================== */
 startBtn.onclick = async () => {
+  // 🔓 Lås upp ljud för iOS
+  tickSound.play().then(() => {
+    tickSound.pause();
+    tickSound.currentTime = 0;
+  }).catch(() => {});
+
   engine = new QuizEngine();
   await engine.loadQuestions();
 
