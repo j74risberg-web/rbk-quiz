@@ -169,7 +169,6 @@ function showResult() {
     <p style="text-align:center; font-size:18px;">
       ${score} / ${total} rätt
     </p>
-    <button onclick="location.reload()">Spela igen</button>
   `;
 }
 
