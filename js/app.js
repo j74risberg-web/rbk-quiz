@@ -2,8 +2,9 @@ import { QuizEngine } from "/rbk-quiz/js/quizEngine.js";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 
-const SUPABASE_URL = "https://DITT-PROJEKT-ID.supabase.co";
-const SUPABASE_ANON_KEY = "DIN-ANON-PUBLIC-KEY";
+const SUPABASE_URL = "https://pfmdzhcvwdcgqghaztwg.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_WQ1HxUZhPTJ6kN-2QRuKAA_J3ztNKWJ";
+
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
