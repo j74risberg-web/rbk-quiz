@@ -1,4 +1,6 @@
+import { QuizEngine } from "/rbk-quiz/js/quizEngine.js";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
 
 const SUPABASE_URL = "https://DITT-PROJEKT-ID.supabase.co";
 const SUPABASE_ANON_KEY = "DIN-ANON-PUBLIC-KEY";
