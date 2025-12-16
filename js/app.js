@@ -31,11 +31,12 @@ tickSound.volume = 0.5;
    START
 ===================== */
 startBtn.onclick = async () => {
-  // 🔓 Lås upp ljud för iOS
-  tickSound.play().then(() => {
-    tickSound.pause();
-    tickSound.currentTime = 0;
-  }).catch(() => {});
+  // 🔓 iOS: lås upp ljud
+  tickSound.currentTime = 0;
+  tickSound.volume = 0;
+  tickSound.play().catch(() => {});
+  tickSound.pause();
+  tickSound.volume = 0.5;
 
   engine = new QuizEngine();
   await engine.loadQuestions();
@@ -46,6 +47,7 @@ startBtn.onclick = async () => {
 
   renderQuestion();
 };
+
 
 /* =====================
    TIMER
