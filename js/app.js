@@ -44,23 +44,23 @@ function getWeekKey() {
   return `${now.getFullYear()}-W${week}`;
 }
 function getCurrentWeekLabel() {
-  const now = new Date();
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
 
-  // ISO-vecka (svensk standard)
-  const currentThursday = new Date(now);
-  currentThursday.setDate(
-    now.getDate() + 3 - ((now.getDay() + 6) % 7)
-  );
+  // ISO-week starts on Monday
+  // Thursday determines the week number
+  date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
 
-  const firstThursday = new Date(currentThursday.getFullYear(), 0, 4);
+  const week1 = new Date(date.getFullYear(), 0, 4);
   const week =
     1 +
     Math.round(
-      ((currentThursday - firstThursday) / 86400000 - 3) / 7
+      ((date - week1) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7
     );
 
   return `Vecka ${week}`;
 }
+
 
 
 
