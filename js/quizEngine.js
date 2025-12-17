@@ -1,28 +1,28 @@
 const CATEGORY_META = {
   hotell: {
     label: "Hotell",
-    icon: "🛏️"
+    icon: "🛏️",
   },
   restauranger: {
     label: "Restaurang",
-    icon: "🍽️"
+    icon: "🍽️",
   },
   nattklubbar: {
     label: "Nattklubb",
-    icon: "💃"
+    icon: "💃",
   },
   teatrar_biografer: {
     label: "Teater / Bio",
-    icon: "🎭"
+    icon: "🎭",
   },
   huvudkontor: {
     label: "Huvudkontor",
-    icon: "💼"
+    icon: "💼",
   },
   ambassader: {
     label: "Ambassad",
-    icon: "🏛️"
-  }
+    icon: "🏛️",
+  },
 };
 export class QuizEngine {
   constructor() {
@@ -32,8 +32,7 @@ export class QuizEngine {
   }
 
   async loadQuestions() {
-    const res = await fetch("/rbk-quiz/data/places.json");
-
+    const res = await fetch("../data/places.json");
     const places = await res.json();
 
     this.questions = this.generateQuestions(places);
@@ -47,32 +46,31 @@ export class QuizEngine {
     // Slumpa max 5 frågor, en per kategori
     shuffle(categories)
       .slice(0, 5)
-      .forEach(category => {
+      .forEach((category) => {
         const list = places[category];
         if (!list || list.length < 4) return;
 
         const correct = randomItem(list);
 
         const wrongs = shuffle(
-          list.filter(p => p.name !== correct.name)
+          list.filter((p) => p.name !== correct.name)
         ).slice(0, 3);
 
         const answers = shuffle([
           correct.address,
-          ...wrongs.map(p => p.address)
+          ...wrongs.map((p) => p.address),
         ]);
 
         const meta = CATEGORY_META[category];
 
-questions.push({
-  category,
-  question: `<span class="q-icon">${meta.icon}</span> Var ligger ${correct.name}?`,
+        questions.push({
+          category,
+          question: `<span class="q-icon">${meta.icon}</span> Var ligger ${correct.name}?`,
 
-  // question: `${meta.icon} ${meta.label}: Var ligger ${correct.name}?`, // ← kan aktiveras igen
-  answers,
-  correct: answers.indexOf(correct.address)
-});
-
+          // question: `${meta.icon} ${meta.label}: Var ligger ${correct.name}?`, // ← kan aktiveras igen
+          answers,
+          correct: answers.indexOf(correct.address),
+        });
       });
 
     return questions;
