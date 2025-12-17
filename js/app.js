@@ -357,44 +357,40 @@ if (startTitle) {
   startTitle.textContent = `RBK Quiz – ${weekLabel}`;
 }
 if (location.hash === "#admin-rbk-2025") {
-  const btn = document.createElement("button");
-  btn.textContent = "🔄 RESET HIGHSCORE";
-  btn.style.margin = "20px auto";
-  btn.style.display = "block";
-  btn.style.background = "#dc2626";
-  btn.style.color = "#fff";
-  btn.style.padding = "14px";
-  btn.style.borderRadius = "12px";
-  btn.style.fontSize = "16px";
-  btn.style.fontWeight = "600";
-  btn.style.cursor = "pointer";
 
-  btn.onclick = adminReset;
+  const resetBtn = document.createElement("button");
+  resetBtn.textContent = "🔄 RESET HIGHSCORE";
+  resetBtn.style.cssText = `
+    margin: 20px auto;
+    display: block;
+    background: #dc2626;
+    color: #fff;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  `;
+  resetBtn.onclick = adminReset;
 
-  document.body.appendChild(btn);
-}
-async function adminReset() {
-  const ok = confirm(
-    "Är du säker?\n\nDetta raderar ALLA highscores."
-  );
-  if (!ok) return;
+  const closeWeekBtn = document.createElement("button");
+  closeWeekBtn.textContent = "🏆 STÄNG VECKAN";
+  closeWeekBtn.style.cssText = `
+    margin: 10px auto;
+    display: block;
+    background: #ca8a04;
+    color: #000;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  `;
+  closeWeekBtn.onclick = closeWeek;
 
-  const res = await supabase.rpc("reset_highscores", {
-    secret: "RBK_ADMIN_2025"
-  });
-
-  console.log("RPC response:", res);
-
-  if (res.error) {
-    alert("❌ " + res.error.message);
-    console.error(res.error);
-  } else {
-    alert("✅ Highscore rensad");
-    location.reload();
-  }
+  document.body.appendChild(closeWeekBtn);
+  document.body.appendChild(resetBtn);
 }
 
- 
-
-
+  
 
