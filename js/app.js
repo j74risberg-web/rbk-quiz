@@ -13,24 +13,24 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 ===================== */
 const startTitle = document.getElementById("startTitle");
 const nameInput = document.getElementById("playerNameInput");
-const resultTitle = document.getElementById("resultTitle");
-
 const startBtn = document.getElementById("startBtn");
+
 const startScreen = document.getElementById("startScreen");
 const quizScreen = document.getElementById("quizScreen");
 const resultScreen = document.getElementById("resultScreen");
 
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
-const finalResultEl = document.getElementById("finalResult");
 const timerEl = document.getElementById("timer");
 
+const resultTitle = document.getElementById("resultTitle");
+const finalResultEl = document.getElementById("finalResult");
 const topFiveList = document.getElementById("topFiveList");
 
 /* =====================
-   HJÄLPFUNKTIONER – VECKA
+   HJÄLPFUNKTIONER
 ===================== */
-function getWeekKey() {
+function getISOWeekKey() {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
   d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7));
@@ -44,7 +44,7 @@ function getWeekKey() {
 }
 
 function getWeekLabel() {
-  return `Vecka ${getWeekKey().split("-W")[1]}`;
+  return `Vecka ${getISOWeekKey().split("-W")[1]}`;
 }
 
 function formatName(name) {
@@ -60,29 +60,17 @@ let timeLeft = 10;
 let locked = false;
 
 /* =====================
-   LJUD
-===================== */
-const tickSound = new Audio("./sounds/tick.mp3");
-tickSound.volume = 0.5;
-
-/* =====================
    START
 ===================== */
-if (nameInput) {
-  nameInput.addEventListener("input", () => {
-    startBtn.disabled = nameInput.value.trim().length < 2;
-  });
-}
+nameInput.addEventListener("input", () => {
+  startBtn.disabled = nameInput.value.trim().length < 2;
+});
 
 startBtn.onclick = async () => {
   const name = nameInput.value.trim().toLowerCase();
   if (name.length < 2) return;
 
   localStorage.setItem("rbkPlayerName", name);
-
-  // iOS unlock
-  tickSound.play().catch(() => {});
-  tickSound.pause();
 
   engine = new QuizEngine();
   await engine.loadQuestions();
@@ -97,12 +85,6 @@ startBtn.onclick = async () => {
 /* =====================
    TIMER
 ===================== */
-function stopTimer() {
-  clearInterval(timer);
-  tickSound.pause();
-  tickSound.currentTime = 0;
-}
-
 function startTimer() {
   stopTimer();
   timeLeft = 10;
@@ -110,12 +92,6 @@ function startTimer() {
 
   timer = setInterval(() => {
     timeLeft--;
-
-    if (timeLeft <= 3 && timeLeft > 0) {
-      tickSound.currentTime = 0;
-      tickSound.play();
-    }
-
     updateTimer();
 
     if (timeLeft <= 0) {
@@ -127,15 +103,19 @@ function startTimer() {
   }, 1000);
 }
 
+function stopTimer() {
+  clearInterval(timer);
+}
+
 function updateTimer() {
-  if (timerEl) timerEl.textContent = `⏱ ${timeLeft}s`;
+  timerEl.textContent = `⏱ ${timeLeft}s`;
 }
 
 /* =====================
-   RENDER FRÅGA
+   QUIZ
 ===================== */
 function renderQuestion() {
-  clearInterval(timer);
+  stopTimer();
 
   if (engine.isFinished()) {
     showResult();
@@ -145,23 +125,20 @@ function renderQuestion() {
   locked = false;
   const q = engine.currentQuestion();
 
-  questionEl.innerHTML = q.question;
+  questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
 
   startTimer();
 
-  q.answers.forEach((answer, i) => {
+  q.answers.forEach((answer, index) => {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.textContent = answer;
-    btn.onclick = () => handleAnswer(i, btn);
+    btn.onclick = () => handleAnswer(index, btn);
     optionsEl.appendChild(btn);
   });
 }
 
-/* =====================
-   SVAR
-===================== */
 function handleAnswer(index, btn) {
   if (locked) return;
   locked = true;
@@ -192,16 +169,16 @@ async function showResult() {
   const total = engine.getTotal();
   const name = localStorage.getItem("rbkPlayerName");
 
-  const percent = score / total;
-  const medal =
-    percent === 1 ? "🥇" :
-    percent >= 0.8 ? "🥈" :
-    percent >= 0.6 ? "🥉" : "";
+  let medal = "";
+  const pct = score / total;
+  if (pct === 1) medal = "🥇";
+  else if (pct >= 0.8) medal = "🥈";
+  else if (pct >= 0.6) medal = "🥉";
 
   resultTitle.textContent = `RBK Quiz – ${getWeekLabel()}`;
 
   finalResultEl.innerHTML = `
-    <div style="text-align:center;font-size:64px">${medal}</div>
+    <div style="font-size:64px;text-align:center">${medal}</div>
     <p style="text-align:center">${score} / ${total} rätt</p>
   `;
 
@@ -210,43 +187,30 @@ async function showResult() {
 }
 
 /* =====================
-   SUPABASE – DAGENS POÄNG
+   SUPABASE
 ===================== */
 async function saveDailyScore(name, score) {
   const today = new Date().toISOString().split("T")[0];
-  const week = getWeekKey();
-
-  // 🔒 stäng ev. gammal vecka
-  await supabase.rpc("maybe_close_week", {
-    current_week: week
-  });
+  const week = getISOWeekKey();
 
   const { error } = await supabase
-    .from("daily_scores")
-    .insert([{ name, score, date: today, week }]);
+    .from("highscores")
+    .insert([{ name, score, play_date: today, week }]);
 
-  if (error && error.code === "23505") {
+  if (error?.code === "23505") {
     finalResultEl.insertAdjacentHTML(
       "beforeend",
-      `<p style="text-align:center;opacity:0.7">
+      `<p style="opacity:.7;text-align:center">
         Endast första spelet per dag räknas
       </p>`
     );
   }
 }
 
-/* =====================
-   TOPPLISTA – DENNA VECKA
-===================== */
 async function renderTopFive() {
-  if (!topFiveList) return;
-
-  const week = getWeekKey();
-
   const { data } = await supabase
     .from("weekly_scores")
     .select("name, total_score")
-    .eq("week", week)
     .order("total_score", { ascending: false })
     .limit(5);
 
@@ -261,8 +225,6 @@ async function renderTopFive() {
 }
 
 /* =====================
-   TITEL START
+   TITEL
 ===================== */
-if (startTitle) {
-  startTitle.textContent = `RBK Quiz – ${getWeekLabel()}`;
-}
+startTitle.textContent = `RBK Quiz – ${getWeekLabel()}`;
