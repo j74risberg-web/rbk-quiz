@@ -28,24 +28,23 @@ const timerEl = document.getElementById("timer");
 const topFiveList = document.getElementById("topFiveList");
 
 /* =====================
-   HJÄLPFUNKTIONER
+   HJÄLPFUNKTIONER – VECKA
 ===================== */
 function getWeekKey() {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
-  const week1 = new Date(date.getFullYear(), 0, 4);
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7));
+  const week1 = new Date(d.getFullYear(), 0, 4);
   const week =
     1 +
     Math.round(
-      ((date - week1) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7
+      ((d - week1) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7
     );
-  return `${date.getFullYear()}-W${week}`;
+  return `${d.getFullYear()}-W${week}`;
 }
 
 function getWeekLabel() {
-  const week = getWeekKey().split("-W")[1];
-  return `Vecka ${week}`;
+  return `Vecka ${getWeekKey().split("-W")[1]}`;
 }
 
 function formatName(name) {
@@ -59,7 +58,6 @@ let engine = null;
 let timer = null;
 let timeLeft = 10;
 let locked = false;
-let questionStartTime = 0;
 
 /* =====================
    LJUD
@@ -77,11 +75,12 @@ if (nameInput) {
 }
 
 startBtn.onclick = async () => {
-  const playerName = nameInput.value.trim().toLowerCase();
-  if (playerName.length < 2) return;
+  const name = nameInput.value.trim().toLowerCase();
+  if (name.length < 2) return;
 
-  localStorage.setItem("rbkPlayerName", playerName);
+  localStorage.setItem("rbkPlayerName", name);
 
+  // iOS unlock
   tickSound.play().catch(() => {});
   tickSound.pause();
 
@@ -107,7 +106,6 @@ function stopTimer() {
 function startTimer() {
   stopTimer();
   timeLeft = 10;
-  questionStartTime = Date.now();
   updateTimer();
 
   timer = setInterval(() => {
@@ -145,18 +143,18 @@ function renderQuestion() {
   }
 
   locked = false;
-
   const q = engine.currentQuestion();
+
   questionEl.innerHTML = q.question;
   optionsEl.innerHTML = "";
 
   startTimer();
 
-  q.answers.forEach((answer, index) => {
+  q.answers.forEach((answer, i) => {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.textContent = answer;
-    btn.onclick = () => handleAnswer(index, btn);
+    btn.onclick = () => handleAnswer(i, btn);
     optionsEl.appendChild(btn);
   });
 }
@@ -194,15 +192,13 @@ async function showResult() {
   const total = engine.getTotal();
   const name = localStorage.getItem("rbkPlayerName");
 
-  let medal = "";
   const percent = score / total;
-  if (percent === 1) medal = "🥇";
-  else if (percent >= 0.8) medal = "🥈";
-  else if (percent >= 0.6) medal = "🥉";
+  const medal =
+    percent === 1 ? "🥇" :
+    percent >= 0.8 ? "🥈" :
+    percent >= 0.6 ? "🥉" : "";
 
-  if (resultTitle) {
-    resultTitle.textContent = `RBK Quiz – ${getWeekLabel()}`;
-  }
+  resultTitle.textContent = `RBK Quiz – ${getWeekLabel()}`;
 
   finalResultEl.innerHTML = `
     <div style="text-align:center;font-size:64px">${medal}</div>
@@ -214,47 +210,49 @@ async function showResult() {
 }
 
 /* =====================
-   SUPABASE – DAGLIG POÄNG
+   SUPABASE – DAGENS POÄNG
 ===================== */
 async function saveDailyScore(name, score) {
   const today = new Date().toISOString().split("T")[0];
   const week = getWeekKey();
 
+  // 🔒 stäng ev. gammal vecka
+  await supabase.rpc("maybe_close_week", {
+    current_week: week
+  });
+
   const { error } = await supabase
     .from("daily_scores")
     .insert([{ name, score, date: today, week }]);
 
-  if (error) {
-    if (error.code === "23505") {
-      finalResultEl.insertAdjacentHTML(
-        "beforeend",
-        `<p style="opacity:0.7;text-align:center">
-          Endast första spelet per dag räknas
-        </p>`
-      );
-    } else {
-      console.error(error);
-    }
+  if (error && error.code === "23505") {
+    finalResultEl.insertAdjacentHTML(
+      "beforeend",
+      `<p style="text-align:center;opacity:0.7">
+        Endast första spelet per dag räknas
+      </p>`
+    );
   }
 }
 
 /* =====================
-   TOPPLISTA (VECKA)
+   TOPPLISTA – DENNA VECKA
 ===================== */
 async function renderTopFive() {
   if (!topFiveList) return;
 
-  const { data, error } = await supabase
+  const week = getWeekKey();
+
+  const { data } = await supabase
     .from("weekly_scores")
     .select("name, total_score")
+    .eq("week", week)
     .order("total_score", { ascending: false })
     .limit(5);
 
-  if (error) return;
-
   topFiveList.innerHTML = "";
 
-  data.forEach((row, i) => {
+  data?.forEach((row, i) => {
     const medal = ["🥇", "🥈", "🥉"][i] || "🎖️";
     const li = document.createElement("li");
     li.innerHTML = `${medal} <strong>${formatName(row.name)}</strong> – ${row.total_score}`;
@@ -263,7 +261,7 @@ async function renderTopFive() {
 }
 
 /* =====================
-   TITEL
+   TITEL START
 ===================== */
 if (startTitle) {
   startTitle.textContent = `RBK Quiz – ${getWeekLabel()}`;
