@@ -30,7 +30,7 @@
   .box {
     max-width: 520px;
     margin: 40px auto;
-    background: linear-gradient(180deg, #020617, #020617);
+    background: #020617;
     padding: 24px 20px 28px;
     border-radius: 18px;
     box-shadow:
@@ -38,27 +38,19 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 28px;
-    letter-spacing: 0.3px;
-  }
-
-  h2, h3 {
+  h1, h2, h3 {
     text-align: center;
   }
 
   #question {
     font-size: 18px;
-    line-height: 1.4;
     margin-bottom: 18px;
     text-align: center;
   }
 
   button {
     width: 100%;
-    padding: 14px 16px;
+    padding: 14px;
     font-size: 16px;
     border-radius: 12px;
     border: none;
@@ -67,146 +59,96 @@
     color: #000;
     font-weight: 600;
     margin-top: 14px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(250, 204, 21, 0.35);
   }
 
   .option {
-    background: linear-gradient(
-      180deg,
-      var(--bg-option),
-      #020617
-    );
+    background: linear-gradient(180deg, var(--bg-option), #020617);
     border: 1px solid var(--border);
-    padding: 14px 12px;
+    padding: 14px;
     border-radius: 12px;
     margin-top: 10px;
-    cursor: pointer;
     font-size: 15px;
     color: var(--text-main);
-    transition:
-      background 0.15s ease,
-      transform 0.1s ease,
-      border-color 0.15s ease;
   }
 
-  .option:hover {
-    background: var(--bg-option-hover);
-    border-color: var(--accent);
-    transform: translateY(-1px);
+  .option.correct {
+    background: #16a34a;
+    color: #fff;
+  }
+
+  .option.wrong {
+    background: #dc2626;
+    color: #fff;
   }
 
   .hidden {
     display: none;
   }
 
-  #finalResult {
-    font-size: 18px;
+  #timer {
     text-align: center;
-    margin-top: 16px;
+    margin: 10px 0;
+    font-size: 18px;
   }
 
-  #finalResult p {
+  .toplist-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  ol li {
     margin: 6px 0;
+  }
+
+  /* === DAG-FÖR-DAG === */
+  #dailyBreakdown {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    font-size: 15px;
     color: var(--text-muted);
   }
-    .option.correct {
-  background: #16a34a; /* grön */
-  border-color: #22c55e;
-  color: #fff;
-}
 
-.option.wrong {
-  background: #dc2626; /* röd */
-  border-color: #ef4444;
-  color: #fff;
-}
-
-.option:disabled {
-  cursor: not-allowed;
-  opacity: 0.9;
-}
-#timer {
-  text-align: center;
-  margin: 10px 0;
-  font-size: 18px;
-  opacity: 0.9;
-}
-
-.option.correct {
-  background: #16a34a !important;
-  color: #fff;
-}
-
-.option.wrong {
-  background: #dc2626 !important;
-  color: #fff;
-}
-/* === Quiz-ikon i frågan === */
-.q-icon {
-  font-size: 2.4rem;
-  margin-right: 8px;
-  vertical-align: middle;
-}
-/* === TOPPLISTA === */
-.toplist-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
-#topFiveList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-
-  font-size: 16px;      /* ⬅️ större text */
-  font-weight: 600;
-  line-height: 1.6;
-}
-
-#topFiveList li {
-  margin: 6px 0;
-}
-
-
-</style>
-
+  #dailyBreakdown li {
+    margin: 4px 0;
+  }
+  </style>
 </head>
 
 <body>
   <div class="box">
-    <h1>🏆 RBK Quiz</h1>
 
-   <!-- START -->
-<div id="startScreen">
-  <h1 id="startTitle">RBK Quiz</h1>
-  <h2>Vem spelar?</h2>
+    <!-- START -->
+    <div id="startScreen">
+      <h1 id="startTitle">RBK Quiz</h1>
+      <h2>Vem spelar?</h2>
 
-  <input
-    type="text"
-    id="playerNameInput"
-    placeholder="Skriv ditt namn"
-    maxlength="20"
-    style="
-      width:100%;
-      padding:14px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:#020617;
-      color:var(--text-main);
-      font-size:16px;
-      margin-bottom:14px;
-    "
-  />
+      <input
+        type="text"
+        id="playerNameInput"
+        placeholder="Skriv ditt namn"
+        maxlength="20"
+        style="
+          width:100%;
+          padding:14px;
+          border-radius:12px;
+          border:1px solid var(--border);
+          background:#020617;
+          color:var(--text-main);
+          font-size:16px;
+          margin-bottom:14px;
+        "
+      />
 
-  <button id="startBtn" disabled>Starta quiz</button>
-</div>
-
+      <button id="startBtn" disabled>Starta quiz</button>
+    </div>
 
     <!-- QUIZ -->
     <div id="quizScreen" class="hidden">
@@ -216,56 +158,35 @@
     </div>
 
     <!-- RESULTAT -->
-<div id="resultScreen" class="hidden">
-  <h2 id="resultTitle">Resultat</h2>
+    <div id="resultScreen" class="hidden">
+      <h2 id="resultTitle">Resultat</h2>
 
-  <div id="finalResult"></div>
+      <div id="finalResult"></div>
 
-  <hr style="margin:20px 0; border-color:var(--border);" />
+      <!-- 🆕 DAG-FÖR-DAG -->
+      <h3>📅 Din vecka</h3>
+      <ul id="dailyBreakdown"></ul>
 
-  <h1>🏆 High score</h1>
-<p id="highScoreText" style="text-align:center;"></p>
+      <hr style="margin:20px 0; border-color:var(--border);" />
 
-<h2 style="text-align:center;">🏆 Top 5</h2>
+      <h2>🏆 Top 5 denna vecka</h2>
+      <div class="toplist-wrapper">
+        <ol id="topFiveList"></ol>
+      </div>
 
-<div class="toplist-wrapper">
-  <ol id="topFiveList"></ol>
-</div>
+      <hr style="margin:20px 0; border-color:var(--border);" />
 
-  <hr style="margin:20px 0; border-color:var(--border);" />
+      <h2>🏅 Veckovinnare (senaste 5)</h2>
+      <div class="toplist-wrapper">
+        <ol id="weeklyWinnersList"></ol>
+      </div>
 
-<h2 style="text-align:center;">📅 Veckovinnare (senaste 5 veckor)</h2>
+      <button onclick="location.reload()">Spela igen</button>
+    </div>
 
-<div class="toplist-wrapper">
-  <ol id="weeklyWinnersList"></ol>
-</div>
+  </div>
 
-
- <!--
-<h3>⭐ Veckans vinnare</h3>
-<p id="weeklyWinnerText" style="text-align:center;"></p>
--->
-
-
-  <button onclick="location.reload()">Spela igen</button>
-</div>
-
-
-  <!-- VIKTIGT: script sist -->
+  <!-- SCRIPT -->
   <script type="module" src="./js/app.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
