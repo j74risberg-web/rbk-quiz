@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <title>RBK Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #020617;
+      --bg-option: #0b1220;
+      --bg-option-hover: #1e293b;
+      --accent: #facc15;
+      --accent-hover: #fde047;
+      --text-main: #e5e7eb;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen, Ubuntu, Cantarell;
+      background: radial-gradient(circle at top, #111827, #020617);
+      color: var(--text-main);
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    .box {
+      max-width: 520px;
+      margin: 40px auto;
+      background: #020617;
+      padding: 24px 20px 28px;
+      border-radius: 18px;
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+    }
+
+    #question {
+      font-size: 18px;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(180deg, var(--accent), var(--accent-hover));
+      color: #000;
+      font-weight: 600;
+      margin-top: 14px;
+    }
+
+    .option {
+      background: linear-gradient(180deg, var(--bg-option), #020617);
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: 10px;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    .option.correct {
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .option.wrong {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #timer {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .toplist-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    ol li {
+      margin: 6px 0;
+    }
+
+    /* === DAG-FÖR-DAG === */
+    #dailyBreakdown {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0;
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    #dailyBreakdown li {
+      margin: 4px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+
+    <!-- START -->
+    <div id="startScreen">
+      <h1 id="startTitle">RBK Quiz</h1>
+      <h2>Vem spelar?</h2>
+
+      <input
+        type="text"
+        id="playerNameInput"
+        placeholder="Skriv ditt namn"
+        maxlength="20"
+        style="
+          width:100%;
+          padding:14px;
+          border-radius:12px;
+          border:1px solid var(--border);
+          background:#020617;
+          color:var(--text-main);
+          font-size:16px;
+          margin-bottom:14px;
+        "
+      />
+
+      <button id="startBtn" disabled>Starta quiz</button>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quizScreen" class="hidden">
+      <p id="question"></p>
+      <div id="options"></div>
+      <div id="timer"></div>
+    </div>
+
+    <!-- RESULTAT -->
+    <div id="resultScreen" class="hidden">
+      <h2 id="resultTitle">Resultat</h2>
+
+      <div id="finalResult"></div>
+
+      <!-- DAG-FÖR-DAG -->
+      <h3>📅 Din vecka</h3>
+      <ul id="dailyBreakdown"></ul>
+
+      <hr style="margin:20px 0; border-color:var(--border);" />
+
+      <!-- LIVE VECKOTABELL -->
+      <h2>🏆 Topplista denna vecka</h2>
+      <div class="toplist-wrapper">
+        <ol id="topFiveList"></ol>
+      </div>
+
+      <hr style="margin:20px 0; border-color:var(--border);" />
+
+      <!-- VECKOVINNARE -->
+      <h2>🏅 Veckovinnare (senaste 5)</h2>
+      <div class="toplist-wrapper">
+        <ol id="weeklyWinnersList"></ol>
+      </div>
+
+      <button onclick="location.reload()">Spela igen</button>
+    </div>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

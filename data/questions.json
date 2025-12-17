@@ -1,0 +1,12 @@
+{
+  "category": "hotell",
+  "question": "Var ligger Hotel Sheraton?",
+  "answers": [
+    "Tegelbacken",
+    "Stureplan",
+    "Medborgarplatsen",
+    "Odenplan"
+  ],
+  "correct": 0
+}
+
