@@ -1,6 +1,8 @@
 import { QuizEngine } from "./quizEngine.js";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
+const IS_ADMIN = new URLSearchParams(window.location.search).has("admin");
+
 /* =====================
    SUPABASE
 ===================== */
@@ -47,6 +49,39 @@ function getWeekLabel() {
 
 function formatName(name) {
   return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+function clearLocalHighscores() {
+  localStorage.removeItem("rbkLocalHighscores");
+}
+
+function setLocalHighscores(data) {
+  localStorage.setItem("rbkLocalHighscores", JSON.stringify(data));
+}
+
+function getLocalHighscores() {
+  const raw = localStorage.getItem("rbkLocalHighscores");
+  return raw ? JSON.parse(raw) : null;
+}
+
+function getWeekOverride() {
+  return localStorage.getItem("rbkWeekOverride");
+}
+
+function setWeekOverride(weekKey) {
+  localStorage.setItem("rbkWeekOverride", weekKey);
+}
+
+function clearWeekOverride() {
+  localStorage.removeItem("rbkWeekOverride");
+}
+
+function getActiveWeekKey() {
+  return getWeekOverride() ?? getISOWeekKey();
+}
+
+function getActiveWeekLabel() {
+  return `Vecka ${getActiveWeekKey().split("-W")[1]}`;
 }
 
 /* =====================
@@ -174,7 +209,7 @@ async function showResult() {
   else if (pct >= 0.8) medal = "🥈";
   else if (pct >= 0.6) medal = "🥉";
 
-  resultTitle.textContent = `RBK Quiz – ${getWeekLabel()}`;
+  resultTitle.textContent = `RBK Quiz – ${getActiveWeekLabel()}`;
 
   finalResultEl.innerHTML = `
     <div style="font-size:64px;text-align:center">${medal}</div>
@@ -190,7 +225,7 @@ async function showResult() {
 ===================== */
 async function saveDailyScore(name, score) {
   const today = new Date().toISOString().split("T")[0];
-  const week = getISOWeekKey();
+  const week = getActiveWeekKey();
 
   const { error } = await supabase
     .from("highscores")
@@ -207,11 +242,21 @@ async function saveDailyScore(name, score) {
 }
 
 async function renderTopFive() {
-  const { data } = await supabase
-    .from("weekly_scores")
-    .select("name, total_score")
-    .order("total_score", { ascending: false })
-    .limit(5);
+  const local = getLocalHighscores();
+  let data;
+
+  if (local) {
+    data = local;
+  } else {
+    const res = await supabase
+      .from("weekly_scores")
+      .select("name, total_score")
+      .eq("week", getActiveWeekKey())
+      .order("total_score", { ascending: false })
+      .limit(5);
+
+    data = res.data;
+  }
 
   topFiveList.innerHTML = "";
 
@@ -221,6 +266,9 @@ async function renderTopFive() {
     li.innerHTML = `${medal} <strong>${formatName(row.name)}</strong> – ${
       row.total_score
     }`;
+    const strong = document.createElement("strong");
+    strong.textContent = formatName(row.name);
+    li.append(`${medal} `, strong, ` – ${row.total_score}`);
     topFiveList.appendChild(li);
   });
 }
@@ -231,4 +279,89 @@ function test() {
 /* =====================
    TITEL
 ===================== */
-startTitle.textContent = `RBK Quiz – ${getWeekLabel()}`;
+startTitle.textContent = `RBK Quiz – ${getActiveWeekLabel()}`;
+
+/* =====================
+   ADMIN / TEST
+===================== */
+if (IS_ADMIN) {
+  // Visa adminpanel
+  const panel = document.getElementById("adminPanel");
+  if (panel) panel.style.display = "block";
+
+  const label = document.getElementById("adminWeekLabel");
+  if (label) label.textContent = getActiveWeekLabel();
+
+  // Nästa fråga
+  document.getElementById("adminNext")?.addEventListener("click", () => {
+    if (!engine) return;
+    engine.index++;
+    renderQuestion();
+  });
+
+  // Hoppa till resultat
+  document.getElementById("adminResult")?.addEventListener("click", () => {
+    if (!engine) return;
+    showResult();
+  });
+
+  // Sätt maxpoäng
+  document.getElementById("adminMax")?.addEventListener("click", () => {
+    if (!engine) return;
+    engine.score = engine.questions.length;
+  });
+
+  // Starta / resetta spel
+  document.getElementById("adminReset")?.addEventListener("click", async () => {
+    engine = new QuizEngine();
+    await engine.loadQuestions();
+
+    startScreen.classList.add("hidden");
+    resultScreen.classList.add("hidden");
+    quizScreen.classList.remove("hidden");
+
+    renderQuestion();
+  });
+
+  // +1 vecka (simulering)
+  document.getElementById("adminNextWeek")?.addEventListener("click", () => {
+    const current = getActiveWeekKey();
+    const [year, week] = current.split("-W").map(Number);
+    setWeekOverride(`${year}-W${week + 1}`);
+
+    startTitle.textContent = `RBK Quiz – ${getActiveWeekLabel()}`;
+    alert(`Simulerar ${getActiveWeekLabel()}`);
+  });
+
+  // Rensa veckosimulering
+  document.getElementById("adminClearWeek")?.addEventListener("click", () => {
+    clearWeekOverride();
+    startTitle.textContent = `RBK Quiz – ${getActiveWeekLabel()}`;
+    alert("Veckosimulering avstängd");
+  });
+
+  // Nollställ highscores lokalt
+  document.getElementById("adminClearScores")?.addEventListener("click", () => {
+    setLocalHighscores([]);
+    renderTopFive();
+    alert("Highscores nollställda (lokalt)");
+  });
+
+  // Minimera adminpanel
+  //document.getElementById("adminToggle")?.addEventListener("click", () => {
+  //document
+  //.querySelectorAll("#adminPanel .admin-group")
+  //.forEach(el => el.classList.toggle("hidden"));
+  //});
+
+  // Auto-start i adminläge (valfritt men smidigt)
+  if (!engine) {
+    engine = new QuizEngine();
+    engine.loadQuestions().then(() => {
+      startScreen.classList.add("hidden");
+      resultScreen.classList.add("hidden");
+      quizScreen.classList.remove("hidden");
+      renderQuestion();
+    });
+  }
+}

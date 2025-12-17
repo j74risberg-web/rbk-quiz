@@ -126,6 +126,80 @@
       #dailyBreakdown li {
         margin: 4px 0;
       }
+
+      /* =====================
+         ADMIN PANEL
+      ===================== */
+      .admin-panel {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        width: 260px;
+        background: #020617;
+        border: 1px solid #334155;
+        border-radius: 14px;
+        padding: 12px;
+        z-index: 1000;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      }
+
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      .admin-badge {
+        background: #facc15;
+        color: #020617;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 999px;
+      }
+
+      .admin-group {
+        display: grid;
+        gap: 6px;
+        margin-bottom: 10px;
+      }
+
+      .admin-group button {
+        background: #0b1220;
+        border: 1px solid #334155;
+        color: #e5e7eb;
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .admin-group button:hover {
+        background: #1e293b;
+      }
+
+      .admin-group.danger button {
+        background: #3f1d1d;
+        border-color: #7f1d1d;
+        color: #fecaca;
+      }
+
+      .admin-group.danger button:hover {
+        background: #7f1d1d;
+      }
+
+      /* Mobil: flytta ner panelen */
+      @media (max-width: 640px) {
+        .admin-panel {
+          right: 8px;
+          left: 8px;
+          width: auto;
+          bottom: 8px;
+          top: auto;
+        }
+      }
     </style>
   </head>
 
@@ -195,5 +269,39 @@
 
     <!-- SCRIPT -->
     <script type="module" src="./js/app.js"></script>
+
+    <div id="adminPanel" class="admin-panel hidden">
+      <div class="admin-header">
+        <strong>🛠 Adminläge</strong>
+        <span class="admin-badge">TEST</span>
+      </div>
+
+      <p
+        style="
+          font-size: 12px;
+          opacity: 0.7;
+          text-align: center;
+          margin: 6px 0 10px;
+        "
+      >
+        Aktiv vecka: <strong id="adminWeekLabel"></strong>
+      </p>
+
+      <div class="admin-group">
+        <button id="adminReset">Starta / Reset spel</button>
+        <button id="adminNext">Nästa fråga</button>
+        <button id="adminResult">Visa resultat</button>
+        <button id="adminMax">Maxpoäng</button>
+      </div>
+
+      <div class="admin-group">
+        <button id="adminNextWeek">+1 vecka</button>
+        <button id="adminClearWeek">Rensa vecka</button>
+      </div>
+
+      <div class="admin-group danger">
+        <button id="adminClearScores">Nollställ highscores</button>
+      </div>
+    </div>
   </body>
 </html>
