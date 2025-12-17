@@ -1,4 +1,4 @@
-import { QuizEngine } from "/rbk-quiz/js/quizEngine.js";
+import { QuizEngine } from "./quizEngine.js";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 /* =====================
@@ -226,8 +226,6 @@ async function renderTopFive() {
 function test() {
   console.log("hej");
 }
-
-const test = { a: 1, b: 2 };
 
 /* =====================
    TITEL
