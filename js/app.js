@@ -4,11 +4,8 @@ import { QuizEngine } from "./quizEngine.js";
    DOM
 ===================== */
 const nameInput = document.getElementById("playerNameInput");
-const highScoreText = document.getElementById("highScoreText");
-const weeklyWinnerText = document.getElementById("weeklyWinnerText");
-const resultTitle = document.getElementById("resultTitle");
-
 const startBtn = document.getElementById("startBtn");
+
 const startScreen = document.getElementById("startScreen");
 const quizScreen = document.getElementById("quizScreen");
 const resultScreen = document.getElementById("resultScreen");
@@ -17,15 +14,6 @@ const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const finalResultEl = document.getElementById("finalResult");
 const timerEl = document.getElementById("timer");
-
-// Aktivera startknappen när namn skrivs
-if (nameInput) {
-  nameInput.addEventListener("input", () => {
-    startBtn.disabled = nameInput.value.trim().length < 2;
-  });
-}
-
-
 
 /* =====================
    STATE
@@ -39,23 +27,47 @@ let locked = false;
    LJUD
 ===================== */
 const tickSound = new Audio("./sounds/tick.mp3");
+tickSound.loop = true;
 tickSound.volume = 0.5;
+
+/* =====================
+   IKONER (steg 1)
+===================== */
+const CATEGORY_ICONS = {
+  hotell: "🛏️",
+  restauranger: "🍽️",
+  nattklubbar: "💃",
+  teatrar_biografer: "🎭",
+  huvudkontor: "💼",
+  ambassader: "🏛️",
+};
+
+const DEFAULT_ICON = "📍";
+
+function getCategoryIcon(category) {
+  return CATEGORY_ICONS[category] || DEFAULT_ICON;
+}
 
 /* =====================
    START
 ===================== */
+if (nameInput) {
+  nameInput.addEventListener("input", () => {
+    startBtn.disabled = nameInput.value.trim().length < 2;
+  });
+}
+
 startBtn.onclick = async () => {
   const playerName = nameInput.value.trim();
   if (playerName.length < 2) return;
 
   localStorage.setItem("rbkPlayerName", playerName);
 
-  // 🔓 iOS: lås upp ljud
-  tickSound.currentTime = 0;
-  tickSound.volume = 0;
-  tickSound.play().catch(() => {});
+  // 🔓 iOS audio unlock
+  tickSound.muted = true;
+  await tickSound.play().catch(() => {});
   tickSound.pause();
-  tickSound.volume = 0.5;
+  tickSound.muted = false;
 
   engine = new QuizEngine();
   await engine.loadQuestions();
@@ -67,52 +79,42 @@ startBtn.onclick = async () => {
   renderQuestion();
 };
 
-
 /* =====================
    TIMER
 ===================== */
-function stopTimer() {
-  if (timer) {
-   clearInterval(timer);
-
-    timer = null;
-  }
-
-  // stoppa tick-ljud om det spelas
-  tickSound.pause();
-  tickSound.currentTime = 0;
-}
-
 function startTimer() {
   stopTimer();
-          // ⛔ stoppa eventuell gammal timer
+
   timeLeft = 10;
   updateTimer();
 
   timer = setInterval(() => {
     timeLeft--;
-
-    // 🔊 Tick vid 3, 2, 1
-    if (timeLeft <= 3 && timeLeft > 0) {
-      tickSound.currentTime = 0;
-      tickSound.play();
-    }
-
     updateTimer();
 
-    // ⏱ TIDEN SLUT
+    if (timeLeft === 3) {
+      tickSound.currentTime = 0;
+      tickSound.play().catch(() => {});
+    }
+
     if (timeLeft <= 0) {
       stopTimer();
-      // ⛔ VIKTIGT: stoppa timern
-     
       locked = true;
-
-      engine.answer(-1);         // räknas som fel / timeout
+      engine.answer(-1);
       setTimeout(renderQuestion, 800);
     }
   }, 1000);
 }
 
+function stopTimer() {
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
+
+  tickSound.pause();
+  tickSound.currentTime = 0;
+}
 
 function updateTimer() {
   if (timerEl) {
@@ -124,8 +126,7 @@ function updateTimer() {
    RENDER FRÅGA
 ===================== */
 function renderQuestion() {
-  // ⛔ stoppa ALLTID eventuell gammal timer
-  clearInterval(timer);
+  stopTimer();
 
   if (engine.isFinished()) {
     showResult();
@@ -135,21 +136,24 @@ function renderQuestion() {
   locked = false;
 
   const q = engine.currentQuestion();
-  questionEl.textContent = q.question;
+
+  // 🔍 STEG 1: logga exakt hur frågan ser ut
+  console.log("QUESTION OBJECT:", q);
+
+  questionEl.textContent = `${getCategoryIcon(q.category)} ${q.question}`;
+
   optionsEl.innerHTML = "";
 
-  startTimer(); // ✅ starta NY timer här
+  startTimer();
 
   q.answers.forEach((answer, index) => {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.textContent = answer;
-
     btn.onclick = () => handleAnswer(index, btn);
     optionsEl.appendChild(btn);
   });
 }
-
 
 /* =====================
    SVAR
@@ -157,6 +161,7 @@ function renderQuestion() {
 function handleAnswer(index, btn) {
   if (locked) return;
   locked = true;
+
   stopTimer();
 
   const q = engine.currentQuestion();
@@ -183,11 +188,9 @@ function showResult() {
   const total = engine.getTotal();
 
   let medal = "";
-
   if (score === 5) medal = "🥇";
   else if (score === 4) medal = "🥈";
   else if (score === 3) medal = "🥉";
-  // 0–2 rätt → ingen medalj
 
   finalResultEl.innerHTML = `
     <div style="text-align:center; font-size:64px; margin-bottom:16px;">
@@ -198,6 +201,3 @@ function showResult() {
     </p>
   `;
 }
-
-
-
