@@ -1,5 +1,12 @@
 import { QuizEngine } from "./quizEngine.js";
 
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const supabase = createClient(
+  "https://pfmdzhcvwdcgqghaztwg.supabase.co",
+  "sb_publishable_WQ1HxUZhPTJ6kN-2QRuKAA_J3ztNKWJ"
+);
+
 /* =====================
    DOM
 ===================== */
@@ -9,6 +16,7 @@ const startBtn = document.getElementById("startBtn");
 const startScreen = document.getElementById("startScreen");
 const quizScreen = document.getElementById("quizScreen");
 const resultScreen = document.getElementById("resultScreen");
+const scoreBoardScreen = document.getElementById("scoreBoardScreen");
 
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
@@ -31,7 +39,7 @@ tickSound.loop = true;
 tickSound.volume = 0.5;
 
 /* =====================
-   IKONER (steg 1)
+   IKONER (v2.1)
 ===================== */
 const CATEGORY_ICONS = {
   hotell: "🛏️",
@@ -40,6 +48,7 @@ const CATEGORY_ICONS = {
   teatrar_biografer: "🎭",
   huvudkontor: "💼",
   ambassader: "🏛️",
+  ovrigt: "🏆", // ✅ NY KATEGORI
 };
 
 const DEFAULT_ICON = "📍";
@@ -47,6 +56,8 @@ const DEFAULT_ICON = "📍";
 function getCategoryIcon(category) {
   return CATEGORY_ICONS[category] || DEFAULT_ICON;
 }
+
+showScoreBoard();
 
 /* =====================
    START
@@ -61,6 +72,8 @@ startBtn.onclick = async () => {
   const playerName = nameInput.value.trim();
   if (playerName.length < 2) return;
 
+  console.log(supabase);
+
   localStorage.setItem("rbkPlayerName", playerName);
 
   // 🔓 iOS audio unlock
@@ -74,6 +87,7 @@ startBtn.onclick = async () => {
 
   startScreen.classList.add("hidden");
   resultScreen.classList.add("hidden");
+  scoreBoardScreen.classList.add("hidden");
   quizScreen.classList.remove("hidden");
 
   renderQuestion();
@@ -125,11 +139,13 @@ function updateTimer() {
 /* =====================
    RENDER FRÅGA
 ===================== */
-function renderQuestion() {
+async function renderQuestion() {
   stopTimer();
 
   if (engine.isFinished()) {
     showResult();
+    await insertScore();
+    await showScoreBoard();
     return;
   }
 
@@ -137,10 +153,10 @@ function renderQuestion() {
 
   const q = engine.currentQuestion();
 
-  // 🔍 STEG 1: logga exakt hur frågan ser ut
-  console.log("QUESTION OBJECT:", q);
-
-  questionEl.textContent = `${getCategoryIcon(q.category)} ${q.question}`;
+  questionEl.innerHTML = `
+    <span style="margin-right:8px;">${getCategoryIcon(q.category)}</span>
+    <span>${q.question}</span>
+  `;
 
   optionsEl.innerHTML = "";
 
@@ -175,6 +191,57 @@ function handleAnswer(index, btn) {
 
   engine.answer(index);
   setTimeout(renderQuestion, 800);
+}
+
+async function insertScore() {
+  const playerName = localStorage.getItem("rbkPlayerName");
+  const score = engine.getScore();
+  const total = engine.getTotal();
+
+  const { data, error } = await supabase.from("score").insert([
+    {
+      user: playerName.toLowerCase(),
+      score: score,
+      max_score: total,
+    },
+  ]);
+
+  if (error) {
+    console.error("Insert failed:", error);
+  } else {
+    console.log("Inserted:", data);
+  }
+}
+
+async function showScoreBoard() {
+  scoreBoardScreen.classList.remove("hidden");
+
+  const tbody = document.getElementById("scoreBody");
+
+  // Clear existing rows
+  tbody.innerHTML = "";
+
+  console.log("Supabase ready", supabase);
+  const { data, error } = await supabase.from("score").select();
+  console.log(data);
+
+  // Loop through rows
+  data.forEach((row) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+    <td>${row.user}</td>
+    <td>${row.score}</td>
+  `;
+
+    tbody.appendChild(tr);
+  });
+
+  if (error) {
+    console.error(error);
+  } else {
+    console.log(data);
+  }
 }
 
 /* =====================
